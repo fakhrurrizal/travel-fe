@@ -15,18 +15,18 @@ const emptyUser: Auth = {
 }
 
 const getInitialState: () => Auth = () => {
-let storedData
+    let storedData
 
-try {
-    storedData = localStorage.getItem(localKey.auth)
-} catch (error) {
-    storedData = null
-    console.log(error)
-}
+    try {
+        storedData = localStorage.getItem(localKey.auth)
+    } catch (error) {
+        storedData = null
+        console.log(error)
+    }
 
-if (!storedData) {
-    return emptyUser
-}
+    if (!storedData) {
+        return emptyUser
+    }
 
     const parseStoredData: Auth = JSON.parse(atob(storedData))
 

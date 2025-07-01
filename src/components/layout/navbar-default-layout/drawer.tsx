@@ -121,8 +121,8 @@ const ExpandedDrawer = (props: Props) => {
                                                     isSelectedItem(path) || childrenIsSelected
                                                         ? theme.palette.primary.main
                                                         : screenModeValue === 'DARK'
-                                                            ? 'white'
-                                                            : ''
+                                                          ? 'white'
+                                                          : ''
                                                 }
                                             />
                                         </ListItemIcon>

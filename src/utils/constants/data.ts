@@ -5,5 +5,4 @@ export const menu_static = [
         icon: 'typcn:home-outline',
         children: [],
     },
-
 ]

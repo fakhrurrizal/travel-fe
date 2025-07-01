@@ -1,6 +1,7 @@
-import { getDefaultLayout } from '@/components'
+import { DefaultLayout } from '@/components'
 import { NextPageWithLayout } from '@/utils'
 import Link from 'next/link'
+import { ReactElement } from 'react'
 
 const ErrorPage: NextPageWithLayout = () => {
     return (
@@ -23,5 +24,8 @@ const ErrorPage: NextPageWithLayout = () => {
     )
 }
 
-ErrorPage.getLayout = getDefaultLayout
+ErrorPage.getLayout = function getLayout(page: ReactElement) {
+    return <DefaultLayout>{page}</DefaultLayout>
+}
+
 export default ErrorPage

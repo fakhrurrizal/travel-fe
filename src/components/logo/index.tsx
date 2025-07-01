@@ -56,13 +56,10 @@ export const LogoForAppBar = () => {
                 }}
             >
                 <ColoredText text='Tanya Dokter' />
-                
             </Box>
         </Box>
     )
 }
-
-
 
 interface Props {
     text: string

@@ -1,5 +1,5 @@
 // components/Navbar.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
     AppBar,
     Toolbar,
@@ -13,50 +13,50 @@ import {
     ListItem,
     ListItemText,
     useMediaQuery,
-    useTheme
-} from '@mui/material';
-import { Icon } from '@iconify/react';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+    useTheme,
+} from '@mui/material'
+import { Icon } from '@iconify/react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 const Navbar: React.FC = () => {
-    const [scrolled, setScrolled] = useState(false);
-    const [mobileOpen, setMobileOpen] = useState(false);
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const [scrolled, setScrolled] = useState(false)
+    const [mobileOpen, setMobileOpen] = useState(false)
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
-    const router = useRouter();
+    const router = useRouter()
 
     useEffect(() => {
         const handleScroll = () => {
-            const isScrolled = window.scrollY > 50;
-            setScrolled(isScrolled);
-        };
+            const isScrolled = window.scrollY > 50
+            setScrolled(isScrolled)
+        }
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll)
 
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
 
     const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
+        setMobileOpen(!mobileOpen)
+    }
 
     const navItems = [
         { label: 'Explore', icon: 'mdi:compass-outline' },
         { label: 'Destinasi', icon: 'mdi:map-marker-outline' },
         { label: 'Jadwal Open Trip', icon: 'mdi:calendar-outline' },
         { label: 'Private Trip', icon: 'mdi:account-group-outline' },
-        { label: 'Kontak', icon: 'mdi:phone-outline' }
-    ];
+        { label: 'Kontak', icon: 'mdi:phone-outline' },
+    ]
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2, color: '#0ea5e9' }}>
+            <Typography variant='h6' sx={{ my: 2, color: '#0ea5e9' }}>
                 Ayo Trip
             </Typography>
             <List>
-                {navItems.map((item) => (
+                {navItems.map(item => (
                     <ListItem key={item.label} disablePadding>
                         <Button
                             fullWidth
@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
                                 justifyContent: 'flex-start',
                                 px: 3,
                                 py: 1.5,
-                                color: '#64748b'
+                                color: '#64748b',
                             }}
                         >
                             <ListItemText primary={item.label} />
@@ -76,7 +76,7 @@ const Navbar: React.FC = () => {
             <Box sx={{ px: 2, mt: 2 }}>
                 <Button
                     onClick={() => router.push('/auth/register')}
-                    variant="outlined"
+                    variant='outlined'
                     fullWidth
                     sx={{
                         mb: 1,
@@ -84,51 +84,51 @@ const Navbar: React.FC = () => {
                         color: '#0ea5e9',
                         '&:hover': {
                             borderColor: '#0284c7',
-                            backgroundColor: 'rgba(14, 165, 233, 0.04)'
-                        }
+                            backgroundColor: 'rgba(14, 165, 233, 0.04)',
+                        },
                     }}
                 >
                     Sign Up
                 </Button>
                 <Button
-                    variant="contained"
+                    variant='contained'
                     fullWidth
                     sx={{
                         backgroundColor: '#f59e0b',
                         '&:hover': {
-                            backgroundColor: '#d97706'
-                        }
+                            backgroundColor: '#d97706',
+                        },
                     }}
                 >
                     Login
                 </Button>
             </Box>
         </Box>
-    );
+    )
 
     return (
         <>
             <AppBar
-                position="fixed"
+                position='fixed'
                 elevation={scrolled ? 4 : 0}
                 sx={{
                     backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
                     backdropFilter: scrolled ? 'blur(10px)' : 'none',
                     transition: 'all 0.3s ease-in-out',
-                    borderBottom: scrolled ? '1px solid rgba(0, 0, 0, 0.12)' : 'none'
+                    borderBottom: scrolled ? '1px solid rgba(0, 0, 0, 0.12)' : 'none',
                 }}
             >
-                <Container maxWidth="xl">
+                <Container maxWidth='xl'>
                     <Toolbar disableGutters>
                         {/* Logo */}
                         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2, mr: 4 }}>
-                            <Image src="/logos.png" alt="Logo" width={60} height={60} />
+                            <Image src='/logos.png' alt='Logo' width={60} height={60} />
                         </Box>
 
                         {/* Desktop Navigation */}
                         {!isMobile && (
                             <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-                                {navItems.map((item) => (
+                                {navItems.map(item => (
                                     <Button
                                         key={item.label}
                                         startIcon={<Icon icon={item.icon} />}
@@ -140,8 +140,8 @@ const Navbar: React.FC = () => {
                                                 backgroundColor: scrolled
                                                     ? 'rgba(14, 165, 233, 0.08)'
                                                     : 'rgba(255, 255, 255, 0.1)',
-                                                color: scrolled ? '#0ea5e9' : 'white'
-                                            }
+                                                color: scrolled ? '#0ea5e9' : 'white',
+                                            },
                                         }}
                                     >
                                         {item.label}
@@ -155,7 +155,7 @@ const Navbar: React.FC = () => {
                             <Box sx={{ display: 'flex', gap: 1 }}>
                                 <Button
                                     onClick={() => router.push('/auth/register')}
-                                    variant="outlined"
+                                    variant='outlined'
                                     sx={{
                                         borderColor: scrolled ? '#0ea5e9' : 'white',
                                         color: scrolled ? '#0ea5e9' : 'white',
@@ -163,19 +163,19 @@ const Navbar: React.FC = () => {
                                             borderColor: scrolled ? '#0284c7' : 'rgba(255, 255, 255, 0.8)',
                                             backgroundColor: scrolled
                                                 ? 'rgba(14, 165, 233, 0.04)'
-                                                : 'rgba(255, 255, 255, 0.1)'
-                                        }
+                                                : 'rgba(255, 255, 255, 0.1)',
+                                        },
                                     }}
                                 >
                                     Sign Up
                                 </Button>
                                 <Button
-                                    variant="contained"
+                                    variant='contained'
                                     sx={{
                                         backgroundColor: '#f59e0b',
                                         '&:hover': {
-                                            backgroundColor: '#d97706'
-                                        }
+                                            backgroundColor: '#d97706',
+                                        },
                                     }}
                                 >
                                     Login
@@ -187,13 +187,13 @@ const Navbar: React.FC = () => {
                         {isMobile && (
                             <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
                                 <IconButton
-                                    color="inherit"
-                                    aria-label="open drawer"
-                                    edge="start"
+                                    color='inherit'
+                                    aria-label='open drawer'
+                                    edge='start'
                                     onClick={handleDrawerToggle}
                                     sx={{ color: scrolled ? '#64748b' : 'white' }}
                                 >
-                                    <Icon icon="mdi:menu" width={24} height={24} />
+                                    <Icon icon='mdi:menu' width={24} height={24} />
                                 </IconButton>
                             </Box>
                         )}
@@ -203,7 +203,7 @@ const Navbar: React.FC = () => {
 
             {/* Mobile drawer */}
             <Drawer
-                variant="temporary"
+                variant='temporary'
                 open={mobileOpen}
                 onClose={handleDrawerToggle}
                 ModalProps={{
@@ -217,7 +217,7 @@ const Navbar: React.FC = () => {
                 {drawer}
             </Drawer>
         </>
-    );
-};
+    )
+}
 
-export default Navbar;
+export default Navbar

@@ -141,15 +141,12 @@ const NavbarButton = ({ path, children = [], icon, name }: NavbarItem) => {
                                         sx={listSubIconIconStyle}
                                         primaryTypographyProps={{ sx: { fontSize: 12.5 } }}
                                     />
-
-
                                 </ListItemButton>
                             </Tooltip>
                         </ListItem>
                     )
                 })}
             </SzhsinMenu>
-
         </>
     )
 }

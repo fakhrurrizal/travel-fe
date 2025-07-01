@@ -1,9 +1,9 @@
 // components/HomepageViews.tsx
-import React from 'react';
-import { Box } from '@mui/material';
-import ToursSection from '@/views/tour-scetion';
-import Navbar from './navbar';
-import HeroSection from './hero-section';
+import React from 'react'
+import { Box } from '@mui/material'
+import ToursSection from '@/views/tour-scetion'
+import Navbar from './navbar'
+import HeroSection from './hero-section'
 
 const HomepageViews: React.FC = () => {
     return (
@@ -12,7 +12,7 @@ const HomepageViews: React.FC = () => {
             <HeroSection />
             <ToursSection />
         </Box>
-    );
-};
+    )
+}
 
-export default HomepageViews;
+export default HomepageViews
