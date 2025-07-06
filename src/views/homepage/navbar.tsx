@@ -1,5 +1,4 @@
-// components/Navbar.tsx
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
     AppBar,
     Toolbar,
@@ -20,47 +19,27 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 const Navbar: React.FC = () => {
-    const [scrolled, setScrolled] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-
     const router = useRouter()
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const isScrolled = window.scrollY > 50
-            setScrolled(isScrolled)
-        }
-
-        window.addEventListener('scroll', handleScroll)
-
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen)
     }
 
-    const navItems = [
-        { label: 'Explore', icon: 'mdi:compass-outline' },
-        { label: 'Destinasi', icon: 'mdi:map-marker-outline' },
-        { label: 'Jadwal Open Trip', icon: 'mdi:calendar-outline' },
-        { label: 'Private Trip', icon: 'mdi:account-group-outline' },
-        { label: 'Kontak', icon: 'mdi:phone-outline' },
-    ]
+    const navItems = [{ label: 'Home' }, { label: 'Booking' }, { label: 'Kontak' }]
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant='h6' sx={{ my: 2, color: '#0ea5e9' }}>
-                Ayo Trip
+            <Typography variant='h6' sx={{ my: 2, color: '#F9833A' }}>
+                TRIPFY
             </Typography>
             <List>
                 {navItems.map(item => (
                     <ListItem key={item.label} disablePadding>
                         <Button
                             fullWidth
-                            startIcon={<Icon icon={item.icon} />}
                             sx={{
                                 justifyContent: 'flex-start',
                                 px: 3,
@@ -75,32 +54,35 @@ const Navbar: React.FC = () => {
             </List>
             <Box sx={{ px: 2, mt: 2 }}>
                 <Button
-                    onClick={() => router.push('/auth/register')}
                     variant='outlined'
                     fullWidth
+                    onClick={() => router.push('/auth/register')}
                     sx={{
                         mb: 1,
-                        borderColor: '#0ea5e9',
-                        color: '#0ea5e9',
+                        borderColor: '#F9833A',
+                        color: '#F9833A',
+                        borderRadius: 25,
                         '&:hover': {
-                            borderColor: '#0284c7',
-                            backgroundColor: 'rgba(14, 165, 233, 0.04)',
+                            borderColor: '#d97706',
+                            backgroundColor: 'rgba(249, 131, 58, 0.04)',
                         },
                     }}
                 >
-                    Sign Up
+                    Daftar
                 </Button>
                 <Button
                     variant='contained'
                     fullWidth
+                    onClick={() => router.push('/auth/login')}
                     sx={{
-                        backgroundColor: '#f59e0b',
+                        backgroundColor: '#F9833A',
+                        borderRadius: 25,
                         '&:hover': {
                             backgroundColor: '#d97706',
                         },
                     }}
                 >
-                    Login
+                    Masuk
                 </Button>
             </Box>
         </Box>
@@ -110,19 +92,18 @@ const Navbar: React.FC = () => {
         <>
             <AppBar
                 position='fixed'
-                elevation={scrolled ? 4 : 0}
+                elevation={0}
                 sx={{
-                    backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-                    backdropFilter: scrolled ? 'blur(10px)' : 'none',
-                    transition: 'all 0.3s ease-in-out',
-                    borderBottom: scrolled ? '1px solid rgba(0, 0, 0, 0.12)' : 'none',
+                    backgroundColor: 'white',
+                    boxShadow: 'none',
+                    borderBottom: 'none',
                 }}
             >
                 <Container maxWidth='xl'>
-                    <Toolbar disableGutters>
+                    <Toolbar disableGutters sx={{ py: 0 }}>
                         {/* Logo */}
-                        <Box sx={{ display: 'flex', alignItems: 'center', ml: 2, mr: 4 }}>
-                            <Image src='/logos.png' alt='Logo' width={60} height={60} />
+                        <Box className='flex justify-center items-center mb-3'>
+                            <Image src='/Logo.png' alt='Logo' width={70} height={70} />
                         </Box>
 
                         {/* Desktop Navigation */}
@@ -131,16 +112,15 @@ const Navbar: React.FC = () => {
                                 {navItems.map(item => (
                                     <Button
                                         key={item.label}
-                                        startIcon={<Icon icon={item.icon} />}
                                         sx={{
-                                            mx: 1,
-                                            color: scrolled ? '#64748b' : 'white',
-                                            fontWeight: 500,
+                                            mx: 2,
+                                            color: '#1e293b',
+                                            fontWeight: 600,
+                                            fontSize: '1rem',
+                                            textTransform: 'none',
                                             '&:hover': {
-                                                backgroundColor: scrolled
-                                                    ? 'rgba(14, 165, 233, 0.08)'
-                                                    : 'rgba(255, 255, 255, 0.1)',
-                                                color: scrolled ? '#0ea5e9' : 'white',
+                                                backgroundColor: 'rgba(249, 131, 58, 0.08)',
+                                                color: '#F9833A',
                                             },
                                         }}
                                     >
@@ -152,33 +132,44 @@ const Navbar: React.FC = () => {
 
                         {/* Desktop Auth Buttons */}
                         {!isMobile && (
-                            <Box sx={{ display: 'flex', gap: 1 }}>
-                                <Button
-                                    onClick={() => router.push('/auth/register')}
-                                    variant='outlined'
-                                    sx={{
-                                        borderColor: scrolled ? '#0ea5e9' : 'white',
-                                        color: scrolled ? '#0ea5e9' : 'white',
-                                        '&:hover': {
-                                            borderColor: scrolled ? '#0284c7' : 'rgba(255, 255, 255, 0.8)',
-                                            backgroundColor: scrolled
-                                                ? 'rgba(14, 165, 233, 0.04)'
-                                                : 'rgba(255, 255, 255, 0.1)',
-                                        },
-                                    }}
-                                >
-                                    Sign Up
-                                </Button>
+                            <Box sx={{ display: 'flex', gap: 2 }}>
                                 <Button
                                     variant='contained'
+                                    onClick={() => router.push('/auth/register')}
                                     sx={{
-                                        backgroundColor: '#f59e0b',
+                                        backgroundColor: '#F9833A',
+                                        borderRadius: 25,
+                                        px: 4,
+                                        py: 1.2,
+                                        fontWeight: 600,
+                                        textTransform: 'none',
+                                        boxShadow: '0 2px 8px rgba(249, 131, 58, 0.3)',
                                         '&:hover': {
                                             backgroundColor: '#d97706',
+                                            boxShadow: '0 4px 12px rgba(249, 131, 58, 0.4)',
                                         },
                                     }}
                                 >
-                                    Login
+                                    Daftar
+                                </Button>
+                                <Button
+                                    variant='outlined'
+                                    onClick={() => router.push('/auth/login')}
+                                    sx={{
+                                        borderColor: '#F9833A',
+                                        color: '#F9833A',
+                                        borderRadius: 25,
+                                        px: 4,
+                                        py: 1.2,
+                                        fontWeight: 600,
+                                        textTransform: 'none',
+                                        '&:hover': {
+                                            borderColor: '#d97706',
+                                            backgroundColor: 'rgba(249, 131, 58, 0.04)',
+                                        },
+                                    }}
+                                >
+                                    Masuk
                                 </Button>
                             </Box>
                         )}
@@ -191,7 +182,7 @@ const Navbar: React.FC = () => {
                                     aria-label='open drawer'
                                     edge='start'
                                     onClick={handleDrawerToggle}
-                                    sx={{ color: scrolled ? '#64748b' : 'white' }}
+                                    sx={{ color: '#64748b' }}
                                 >
                                     <Icon icon='mdi:menu' width={24} height={24} />
                                 </IconButton>
