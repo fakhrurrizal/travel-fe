@@ -1,11 +1,11 @@
-// components/Footer.tsx
+
 import React from 'react'
 import { Container, Typography, Box, Grid, IconButton, Link as MuiLink, useMediaQuery, useTheme } from '@mui/material'
 import { Icon } from '@iconify/react'
 
 const Footer: React.FC = () => {
     const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down('md')
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
     const contactInfo = [
         {
