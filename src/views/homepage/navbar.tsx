@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
         setMobileOpen(!mobileOpen)
     }
 
-    const navItems = [{ label: 'Home' }, { label: 'Booking' }, { label: 'Kontak' }]
+    const navItems = [{ label: 'Home' }, { label: 'Booking' }]
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
