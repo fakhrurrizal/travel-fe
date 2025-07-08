@@ -35,7 +35,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
                 <Head>
                     <meta name='viewport' content='width=device-width, initial-scale=1' />
                     <link rel='icon' href='/logos.ico' />
-                    <title>Ayo Trip</title>
+                    <title>TripFy</title>
                 </Head>
                 <ErrorBoundary>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
