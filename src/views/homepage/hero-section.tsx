@@ -39,13 +39,13 @@ const HeroSection: React.FC = () => {
 
     return (
         <Box sx={{ pt: 10 }}>
-            <Container maxWidth={false} disableGutters sx={{ px: 0 }}>
+            <Container maxWidth={false} disableGutters sx={{ px: 0, position: 'relative' }}>
                 <Grid container spacing={0}>
                     {/* Left Side - Blue Section */}
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={5}>
                         <Box
                             sx={{
-                                background: 'linear-gradient(135deg, #60A5FA 0%, #3B82F6 100%)',
+                                background: 'linear-gradient(135deg,rgb(118, 170, 233) 80%)',
                                 height: { xs: '60vh', md: '70vh' },
                                 position: 'relative',
                                 display: 'flex',
@@ -112,7 +112,7 @@ const HeroSection: React.FC = () => {
                     </Grid>
 
                     {/* Right Side - Image Section */}
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={7}>
                         <Box
                             sx={{
                                 height: { xs: '60vh', md: '70vh' },
@@ -121,70 +121,70 @@ const HeroSection: React.FC = () => {
                                 backgroundPosition: 'center',
                                 position: 'relative',
                             }}
-                        >
-                            {/* Search Bar Overlay */}
-                            <Box
-                                sx={{
-                                    position: 'absolute',
-                                    bottom: 40,
-                                    left: '50%',
-                                    transform: 'translateX(-50%)',
-                                    width: '85%',
-                                    maxWidth: 500,
-                                    zIndex: 3,
-                                }}
-                            >
-                                <Paper
-                                    elevation={12}
-                                    sx={{
-                                        borderRadius: 30,
-                                        overflow: 'hidden',
-                                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                                        backdropFilter: 'blur(20px)',
-                                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                                    }}
-                                >
-                                    <TextField
-                                        fullWidth
-                                        placeholder='Cari destinasi...'
-                                        variant='outlined'
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position='end'>
-                                                    <IconButton
-                                                        edge='end'
-                                                        sx={{
-                                                            backgroundColor: '#F9833A',
-                                                            color: 'white',
-                                                            width: 40,
-                                                            height: 40,
-                                                            mr: 1,
-                                                            '&:hover': {
-                                                                backgroundColor: '#d97706',
-                                                            },
-                                                        }}
-                                                    >
-                                                        <Icon icon='mdi:magnify' width={20} height={20} />
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                            sx: {
-                                                '& .MuiOutlinedInput-notchedOutline': {
-                                                    border: 'none',
-                                                },
-                                                '& .MuiInputBase-input': {
-                                                    py: 2.5,
-                                                    px: 4,
-                                                    fontSize: '1rem',
-                                                },
-                                            },
-                                        }}
-                                    />
-                                </Paper>
-                            </Box>
-                        </Box>
+                        />
                     </Grid>
                 </Grid>
+
+                {/* Floating Search Bar in Center */}
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '55%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: '85%',
+                        maxWidth: 700,
+                        zIndex: 10,
+                    }}
+                >
+                    <Paper
+                        elevation={12}
+                        sx={{
+                            borderRadius: 999,
+                            overflow: 'hidden',
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            backdropFilter: 'blur(20px)',
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                        }}
+                    >
+                        <TextField
+                            fullWidth
+                            placeholder='Cari destinasi...'
+                            variant='outlined'
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position='end'>
+                                        <IconButton
+                                            edge='end'
+                                            sx={{
+                                                backgroundColor: '#F9833A',
+                                                color: 'white',
+                                                width: 48,
+                                                height: 48,
+                                                mr: 1,
+                                                '&:hover': {
+                                                    backgroundColor: '#d97706',
+                                                },
+                                            }}
+                                        >
+                                            <Icon icon='mdi:magnify' width={24} height={24} />
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                                sx: {
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        border: 'none',
+                                    },
+                                    '& .MuiInputBase-input': {
+                                        py: 2,
+                                        px: 4,
+                                        fontSize: '1rem',
+                                    },
+                                },
+                            }}
+                        />
+                    </Paper>
+                </Box>
 
                 {/* Transport Tabs & Booking Form */}
                 <Box sx={{ mt: 0, px: 0 }}>
@@ -318,9 +318,9 @@ const HeroSection: React.FC = () => {
                                                 },
                                             }}
                                         >
-                                            <MenuItem value='1 Dewasa'>1 Dewasa</MenuItem>
-                                            <MenuItem value='2 Dewasa'>2 Dewasa</MenuItem>
-                                            <MenuItem value='3 Dewasa'>3 Dewasa</MenuItem>
+                                            <MenuItem value='1 Dewasa'>Dewasa (12 tahun ke atas)</MenuItem>
+                                            <MenuItem value='1 Anak'>Anak (2 - 11 tahun)</MenuItem>
+                                            <MenuItem value='1 Bayi'>Bayi (di bawah 2 tahun)</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -349,7 +349,8 @@ const HeroSection: React.FC = () => {
                                             }}
                                         >
                                             <MenuItem value='Ekonomi'>Ekonomi</MenuItem>
-                                            <MenuItem value='Bisnis'>Bisnis</MenuItem>
+                                            <MenuItem value='Premium Ekonomi'>Premium Ekonomi</MenuItem>
+                                            <MenuItem value='Bisnis'>Business</MenuItem>
                                             <MenuItem value='First Class'>First Class</MenuItem>
                                         </Select>
                                     </FormControl>
