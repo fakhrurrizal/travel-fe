@@ -5,8 +5,7 @@ import { Icon } from '@iconify/react'
 
 const Footer: React.FC = () => {
     const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-    const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'))
+    const isMobile = useMediaQuery(theme.breakpoints.down('md')
 
     const contactInfo = [
         {
