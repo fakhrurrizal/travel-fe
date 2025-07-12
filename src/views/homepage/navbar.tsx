@@ -18,7 +18,12 @@ import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
-const Navbar: React.FC = () => {
+// Tambahkan props showAuthButtons
+interface NavbarProps {
+    showAuthButtons?: boolean
+}
+
+const Navbar: React.FC<NavbarProps> = ({ showAuthButtons = true }) => {
     const [mobileOpen, setMobileOpen] = useState(false)
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
@@ -28,7 +33,10 @@ const Navbar: React.FC = () => {
         setMobileOpen(!mobileOpen)
     }
 
-    const navItems = [{ label: 'Home' }, { label: 'Booking' }]
+    const navItems = [
+        { label: 'Home', path: '/' },
+        { label: 'Booking', path: '/' },
+    ]
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -40,6 +48,7 @@ const Navbar: React.FC = () => {
                     <ListItem key={item.label} disablePadding>
                         <Button
                             fullWidth
+                            onClick={() => router.push(item.path)}
                             sx={{
                                 justifyContent: 'flex-start',
                                 px: 3,
@@ -52,39 +61,41 @@ const Navbar: React.FC = () => {
                     </ListItem>
                 ))}
             </List>
-            <Box sx={{ px: 2, mt: 2 }}>
-                <Button
-                    variant='outlined'
-                    fullWidth
-                    onClick={() => router.push('/auth/register')}
-                    sx={{
-                        mb: 1,
-                        borderColor: '#F9833A',
-                        color: '#F9833A',
-                        borderRadius: 25,
-                        '&:hover': {
-                            borderColor: '#d97706',
-                            backgroundColor: 'rgba(249, 131, 58, 0.04)',
-                        },
-                    }}
-                >
-                    Daftar
-                </Button>
-                <Button
-                    variant='contained'
-                    fullWidth
-                    onClick={() => router.push('/auth/login')}
-                    sx={{
-                        backgroundColor: '#F9833A',
-                        borderRadius: 25,
-                        '&:hover': {
-                            backgroundColor: '#d97706',
-                        },
-                    }}
-                >
-                    Masuk
-                </Button>
-            </Box>
+            {showAuthButtons && (
+                <Box sx={{ px: 2, mt: 2 }}>
+                    <Button
+                        variant='outlined'
+                        fullWidth
+                        onClick={() => router.push('/auth/register')}
+                        sx={{
+                            mb: 1,
+                            borderColor: '#F9833A',
+                            color: '#F9833A',
+                            borderRadius: 25,
+                            '&:hover': {
+                                borderColor: '#d97706',
+                                backgroundColor: 'rgba(249, 131, 58, 0.04)',
+                            },
+                        }}
+                    >
+                        Daftar
+                    </Button>
+                    <Button
+                        variant='contained'
+                        fullWidth
+                        onClick={() => router.push('/auth/login')}
+                        sx={{
+                            backgroundColor: '#F9833A',
+                            borderRadius: 25,
+                            '&:hover': {
+                                backgroundColor: '#d97706',
+                            },
+                        }}
+                    >
+                        Masuk
+                    </Button>
+                </Box>
+            )}
         </Box>
     )
 
@@ -112,6 +123,7 @@ const Navbar: React.FC = () => {
                                 {navItems.map(item => (
                                     <Button
                                         key={item.label}
+                                        onClick={() => router.push(item.path)}
                                         sx={{
                                             mx: 2,
                                             color: '#1e293b',
@@ -131,7 +143,7 @@ const Navbar: React.FC = () => {
                         )}
 
                         {/* Desktop Auth Buttons */}
-                        {!isMobile && (
+                        {!isMobile && showAuthButtons && (
                             <Box sx={{ display: 'flex', gap: 2 }}>
                                 <Button
                                     variant='contained'
@@ -174,7 +186,7 @@ const Navbar: React.FC = () => {
                             </Box>
                         )}
 
-                        {/* Mobile menu button */}
+                        {/* Mobile Menu Icon */}
                         {isMobile && (
                             <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
                                 <IconButton
@@ -192,7 +204,7 @@ const Navbar: React.FC = () => {
                 </Container>
             </AppBar>
 
-            {/* Mobile drawer */}
+            {/* Mobile Drawer */}
             <Drawer
                 variant='temporary'
                 open={mobileOpen}
