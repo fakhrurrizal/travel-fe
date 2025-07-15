@@ -16,83 +16,102 @@ import { Icon } from '@iconify/react'
 
 const FaqSection: React.FC = () => {
     const [expanded, setExpanded] = useState<string | false>(false)
+    const [activeCategory, setActiveCategory] = useState<string>('all')
 
     const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false)
     }
 
+    const handleCategoryChange = (categoryId: string) => {
+        setActiveCategory(categoryId)
+        setExpanded(false) // Close any open accordion when switching categories
+    }
+
     // Filter categories
     const categories = [
-        { id: 'all', label: 'Semua', active: true },
-        { id: 'booking', label: 'Pemesanan', active: false },
-        { id: 'payment', label: 'Pembayaran', active: false },
-        { id: 'trip', label: 'Perjalanan', active: false },
-        { id: 'policy', label: 'Kebijakan', active: false },
+        { id: 'all', label: 'Semua' },
+        { id: 'booking', label: 'Pemesanan' },
+        { id: 'payment', label: 'Pembayaran' },
+        { id: 'trip', label: 'Perjalanan' },
+        { id: 'policy', label: 'Kebijakan' },
     ]
 
-    // FAQ data with colors
+    // FAQ data with colors and categories
     const faqs = [
         {
             id: 'faq1',
             question: 'Bagaimana cara melakukan pemesanan paket tour?',
             answer: 'Anda dapat melakukan pemesanan paket tour melalui website kami dengan memilih destinasi yang diinginkan, mengisi data diri, dan melakukan pembayaran.',
             color: '#10b981', // green
+            category: 'booking',
         },
         {
             id: 'faq2',
             question: 'Apa saja metode pembayaran yang tersedia?',
             answer: 'Kami menerima pembayaran melalui transfer bank, kartu kredit, e-wallet (GoPay, OVO, Dana), dan cicilan 0%.',
             color: '#f97316', // orange
+            category: 'payment',
         },
         {
             id: 'faq3',
             question: 'Berapa lama sebelum keberangkatan saya harus melakukan pemesanan?',
             answer: 'Minimal 3 hari sebelum keberangkatan untuk paket domestik dan 7 hari untuk paket internasional.',
             color: '#10b981', // green
+            category: 'booking',
         },
         {
             id: 'faq4',
             question: 'Apakah harga sudah termasuk semua fasilitas yang disebutkan?',
             answer: 'Ya, harga paket sudah termasuk semua fasilitas yang tercantum dalam deskripsi paket tour.',
             color: '#f97316', // orange
+            category: 'payment',
         },
         {
             id: 'faq5',
             question: 'Bagaimana jika cuaca buruk saat perjalanan?',
             answer: 'Kami akan memberikan alternatif aktivitas indoor atau mengatur ulang jadwal sesuai kondisi cuaca.',
             color: '#8b5cf6', // purple
+            category: 'trip',
         },
         {
             id: 'faq6',
             question: 'Apakah ada kebijakan refund atau reschedule?',
             answer: 'Ya, kami memiliki kebijakan refund dan reschedule sesuai dengan syarat dan ketentuan yang berlaku.',
             color: '#ef4444', // red
+            category: 'policy',
         },
         {
             id: 'faq7',
             question: 'Apakah tersedia paket untuk solo traveler?',
             answer: 'Ya, kami menyediakan paket khusus untuk solo traveler dengan harga yang sudah disesuaikan.',
             color: '#8b5cf6', // purple
+            category: 'trip',
         },
         {
             id: 'faq8',
             question: 'Dokumen apa saja yang diperlukan untuk perjalanan?',
             answer: 'Untuk domestik: KTP/SIM. Untuk internasional: Paspor, visa (jika diperlukan), dan surat vaksinasi.',
             color: '#8b5cf6', // purple
+            category: 'trip',
         },
         {
             id: 'faq9',
             question: 'Bagaimana jika ada peserta yang berkebutuhan khusus?',
             answer: 'Silakan informasikan kepada kami saat pemesanan agar kami dapat menyiapkan fasilitas yang sesuai.',
             color: '#8b5cf6', // purple
+            category: 'trip',
         },
         {
             id: 'faq10',
             question: 'Bagaimana sistem pembayaran cicilan bekerja?',
             answer: 'Kami bekerja sama dengan berbagai penyedia cicilan 0% seperti Kredivo, Akulaku, dan kartu kredit.',
             color: '#f97316', // orange
+            category: 'payment',
         },
     ]
+
+    // Filter FAQs based on active category
+    const filteredFaqs = activeCategory === 'all' ? faqs : faqs.filter(faq => faq.category === activeCategory)
 
     return (
         <Box sx={{ py: 6, backgroundColor: '#f8fafc' }}>
@@ -132,13 +151,16 @@ const FaqSection: React.FC = () => {
                         <Chip
                             key={category.id}
                             label={category.label}
-                            variant={category.active ? 'filled' : 'outlined'}
+                            variant={activeCategory === category.id ? 'filled' : 'outlined'}
+                            onClick={() => handleCategoryChange(category.id)}
                             sx={{
-                                backgroundColor: category.active ? '#f97316' : 'transparent',
-                                color: category.active ? 'white' : '#64748b',
-                                fontWeight: category.active ? 'bold' : 'normal',
+                                backgroundColor: activeCategory === category.id ? '#f97316' : 'transparent',
+                                color: activeCategory === category.id ? 'white' : '#64748b',
+                                fontWeight: activeCategory === category.id ? 'bold' : 'normal',
+                                cursor: 'pointer',
                                 '&:hover': {
-                                    backgroundColor: category.active ? '#ea580c' : 'rgba(249, 115, 22, 0.1)',
+                                    backgroundColor:
+                                        activeCategory === category.id ? '#ea580c' : 'rgba(249, 115, 22, 0.1)',
                                 },
                                 px: 2,
                                 py: 1,
@@ -158,11 +180,16 @@ const FaqSection: React.FC = () => {
                                 mb: 3,
                             }}
                         >
-                            10 Pertanyaan
+                            {filteredFaqs.length} Pertanyaan
+                            {activeCategory !== 'all' && (
+                                <span style={{ color: '#f97316', marginLeft: '8px' }}>
+                                    - {categories.find(cat => cat.id === activeCategory)?.label}
+                                </span>
+                            )}
                         </Typography>
 
                         <Box sx={{ space: 2 }}>
-                            {faqs.map(faq => (
+                            {filteredFaqs.map(faq => (
                                 <Accordion
                                     key={faq.id}
                                     expanded={expanded === faq.id}
