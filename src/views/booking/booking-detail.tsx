@@ -5,7 +5,7 @@ import Navbar from '../homepage/navbar'
 const TicketDetailPage: React.FC = () => {
     return (
         <Box sx={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
-            <Navbar showAuthButtons={false} />
+            <Navbar showAuthButtons={false} isLoggedIn={true} />
             {/* Content */}
             <Container maxWidth='lg' sx={{ py: 4 }}>
                 <Typography
