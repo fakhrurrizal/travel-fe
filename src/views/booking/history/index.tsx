@@ -100,7 +100,7 @@ const BookingHistoryPage = () => {
     ]
 
     const [openRatingModal, setOpenRatingModal] = useState(false)
-    const [setSelectedBooking] = useState<any>(null)
+    const [selectedBooking, setSelectedBooking] = useState<any>(null)
     const photoInputRef = useRef<HTMLInputElement>(null)
     const videoInputRef = useRef<HTMLInputElement>(null)
 
@@ -277,7 +277,13 @@ const BookingHistoryPage = () => {
 
             <Dialog open={openRatingModal} onClose={handleCloseRatingModal} fullWidth maxWidth='sm'>
                 <DialogTitle sx={{ fontWeight: 'bold', color: '#005484' }}>Beri Rating</DialogTitle>
+
                 <DialogContent dividers>
+                    {selectedBooking && (
+                        <Typography sx={{ fontSize: '0.9rem', color: '#64748b', mb: 2 }}>
+                            {selectedBooking.from} → {selectedBooking.to} ({selectedBooking.date})
+                        </Typography>
+                    )}
                     <Typography sx={{ fontWeight: 'bold', mb: 1, color: '#005484' }}>Kualitas Pelayanan</Typography>
                     <Rating name='rating' defaultValue={0} precision={1} />
                     <Box mt={3}>
