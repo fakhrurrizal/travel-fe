@@ -1,4 +1,6 @@
 // components/TourCard.tsx
+'use client'
+
 import React from 'react'
 import { Paper, Typography, Box, Button } from '@mui/material'
 import { Icon } from '@iconify/react'

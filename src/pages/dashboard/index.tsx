@@ -1,3 +1,5 @@
+'use client'
+
 import { getNavbarLayout } from '@/components'
 import { NextPageWithLayout } from '@/utils'
 
