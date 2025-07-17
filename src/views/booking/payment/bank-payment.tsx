@@ -41,6 +41,7 @@ const PaymentDetailVA = () => {
                 } else if (prev.hours > 0) {
                     return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 }
                 }
+
                 return prev
             })
         }, 1000)

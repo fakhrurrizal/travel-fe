@@ -575,6 +575,7 @@ const TourPackagesPage = () => {
                                                                 const newSelected = prev.filter(
                                                                     p => p !== province.value
                                                                 )
+
                                                                 return newSelected.length > 0 ? newSelected : ['semua']
                                                             })
                                                         }
@@ -652,6 +653,7 @@ const TourPackagesPage = () => {
             </Box>
         )
     }
+
     return <TourPackagesContent />
 }
 
