@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { Box, Container, Typography, Paper, Grid, Button, Divider } from '@mui/material'
 import Navbar from '../homepage/navbar'

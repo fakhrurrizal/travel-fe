@@ -1,4 +1,7 @@
 // components/ToursSection.tsx
+
+'use client'
+
 import React from 'react'
 import { Container, Typography, Grid, Box, Button, Paper } from '@mui/material'
 import { Icon } from '@iconify/react'
