@@ -1,8 +1,9 @@
-import axios from 'axios'
-import { create } from 'zustand'
 import { axiosInterceptor } from '@/config'
 import { ResponseGetMe } from '@/modules/user'
 import { localKey } from '@/utils'
+import getEncodedKey from '@/utils/helpers/getEncodedKey'
+import axios from 'axios'
+import { create } from 'zustand'
 
 export interface Auth {
     accessToken?: string
@@ -15,26 +16,21 @@ const emptyUser: Auth = {
 }
 
 const getInitialState: () => Auth = () => {
-    let storedData
+    if (typeof window === 'undefined') return emptyUser
 
-    try {
-        storedData = localStorage.getItem(localKey.auth)
-    } catch (error) {
-        storedData = null
-        console.log(error)
-    }
+    const storedData = localStorage.getItem(localKey.auth)
 
     if (!storedData) {
         return emptyUser
     }
 
     const parseStoredData: Auth = JSON.parse(atob(storedData))
-
+    const encodedKey = getEncodedKey()
     if (parseStoredData.accessToken) {
         axios.defaults.headers.common['Authorization'] = parseStoredData.accessToken
-
         axiosInterceptor.defaults.headers.common['Authorization'] = parseStoredData.accessToken
     }
+    axios.defaults.headers.common['X-API-KEY'] = encodedKey
 
     return parseStoredData
 }
@@ -89,17 +85,11 @@ export const useAuth = create<AuthState>()((set, getState) => ({
     },
 
     logout: async () => {
-        try {
-            // await axiosInterceptor.post(getApi('logout'))
+        localStorage.clear()
 
-            localStorage.clear()
-
-            return set(state => ({
-                ...state,
-                value: emptyUser,
-            }))
-        } catch (error) {
-            console.error(error)
-        }
+        return set(state => ({
+            ...state,
+            value: emptyUser,
+        }))
     },
 }))

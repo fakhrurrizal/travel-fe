@@ -3,6 +3,7 @@ export const endpoints = {
     get_me: 'auth/user',
     logout: 'auth/logout',
     login: 'auth/signin',
+    register: 'auth/signup',
 
     // blog
     blog: 'blog',

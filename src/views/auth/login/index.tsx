@@ -1,21 +1,16 @@
-import React, { useState } from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import { CustomTextField } from '@/components'
+import { axiosInterceptor } from '@/config'
+import { useLoginMutation } from '@/modules/auth/login'
+import { useAuth } from '@/services'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import {
-    Box,
-    Card,
-    CardContent,
-    TextField,
-    Button,
-    Typography,
-    InputAdornment,
-    IconButton,
-    FormHelperText,
-} from '@mui/material'
 import { Icon } from '@iconify/react'
+import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material'
+import axios from 'axios'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 // Schema Zod untuk validasi Login
 const loginSchema = z.object({
@@ -26,13 +21,16 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>
 
 const LoginComponent: React.FC = () => {
-    const [showPassword, setShowPassword] = useState(false)
     const router = useRouter()
+
+    const { mutateAsync: login, isPending: isLoadingLogin } = useLoginMutation()
+
+    const setAuth = useAuth(state => state.setAuth)
 
     const {
         control,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -43,9 +41,13 @@ const LoginComponent: React.FC = () => {
 
     const onSubmit = async (data: LoginFormData) => {
         try {
-            console.log('Login data:', data)
-            await new Promise(resolve => setTimeout(resolve, 1500))
-            alert('Login berhasil!')
+            const res = await login(data)
+            const user = res?.data?.user
+            const accessToken = 'Bearer ' + res?.data?.access_token
+            setAuth({ accessToken, user })
+            axiosInterceptor.defaults.headers.common['Authorization'] = accessToken
+            axios.defaults.headers.common['Authorization'] = accessToken
+            router.push('/dashboard')
         } catch (error) {
             console.error('Login error:', error)
         }
@@ -65,11 +67,33 @@ const LoginComponent: React.FC = () => {
 
             {/* Form Section */}
             <div
-                className='w-full lg:w-1/2 flex items-center justify-center p-8'
+                className='w-full lg:w-1/2 flex items-center justify-center p-8 relative'
                 style={{ backgroundColor: '#B6E8FF' }}
             >
+                {/* Decorative Image - Top Right */}
+                <div className='absolute top-0 right-0'>
+                    <Image
+                        src='/decorative-lines-top.png'
+                        alt='Decorative Lines Top'
+                        width={400}
+                        height={400}
+                        className='opacity-60'
+                    />
+                </div>
+
+                {/* Decorative Image - Bottom Left */}
+                <div className='absolute bottom-0 left-0'>
+                    <Image
+                        src='/decorative-lines-bottom.png'
+                        alt='Decorative Lines Bottom'
+                        width={400}
+                        height={400}
+                        className='opacity-60'
+                    />
+                </div>
+
                 <Card
-                    className='w-full max-w-sm shadow-none border-0'
+                    className='w-full max-w-sm shadow-none border-0 relative z-10'
                     sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}
                 >
                     <CardContent className='p-0'>
@@ -87,97 +111,29 @@ const LoginComponent: React.FC = () => {
                             Login
                         </Typography>
 
-                        {/* Form */}
                         <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
-                            {/* Email */}
-                            <Box>
-                                <Typography
-                                    variant='body2'
-                                    className='mb-2 font-medium'
-                                    style={{ color: '#2E5266', fontSize: '14px' }}
-                                >
-                                    Email
-                                </Typography>
-                                <Controller
-                                    name='email'
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            fullWidth
-                                            type='email'
-                                            placeholder='email@mail.com'
-                                            variant='outlined'
-                                            error={!!errors.email}
-                                            sx={{
-                                                '& .MuiOutlinedInput-root': {
-                                                    backgroundColor: 'white',
-                                                    borderRadius: '8px',
-                                                    height: '48px',
-                                                },
-                                            }}
-                                        />
-                                    )}
-                                />
-                                {errors.email && (
-                                    <FormHelperText error sx={{ fontSize: '12px' }}>
-                                        {errors.email.message}
-                                    </FormHelperText>
-                                )}
-                            </Box>
-
-                            {/* Password */}
-                            <Box>
-                                <Typography
-                                    variant='body2'
-                                    className='mb-2 font-medium'
-                                    style={{ color: '#2E5266', fontSize: '14px' }}
-                                >
-                                    Password
-                                </Typography>
-                                <Controller
-                                    name='password'
-                                    control={control}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            fullWidth
-                                            type={showPassword ? 'text' : 'password'}
-                                            placeholder='••••••••'
-                                            variant='outlined'
-                                            error={!!errors.password}
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position='end'>
-                                                        <IconButton
-                                                            onClick={() => setShowPassword(!showPassword)}
-                                                            edge='end'
-                                                            size='small'
-                                                        >
-                                                            <Icon
-                                                                icon={showPassword ? 'mdi:eye-off' : 'mdi:eye'}
-                                                                style={{ fontSize: '20px' }}
-                                                            />
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                            sx={{
-                                                '& .MuiOutlinedInput-root': {
-                                                    backgroundColor: 'white',
-                                                    borderRadius: '8px',
-                                                    height: '48px',
-                                                },
-                                            }}
-                                        />
-                                    )}
-                                />
-                                {errors.password && (
-                                    <FormHelperText error sx={{ fontSize: '12px' }}>
-                                        {errors.password.message}
-                                    </FormHelperText>
-                                )}
-                            </Box>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <CustomTextField
+                                        control={control}
+                                        size='medium'
+                                        error={!!errors.email}
+                                        name='email'
+                                        label='Email*'
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <CustomTextField
+                                        control={control}
+                                        inputFormat='PASSWORD'
+                                        size='medium'
+                                        error={!!errors.password}
+                                        placeholder='••••••••'
+                                        name='password'
+                                        label='Password*'
+                                    />
+                                </Grid>
+                            </Grid>
 
                             {/* Button */}
                             <Box className='pt-4'>
@@ -185,7 +141,7 @@ const LoginComponent: React.FC = () => {
                                     type='submit'
                                     fullWidth
                                     variant='contained'
-                                    disabled={isSubmitting}
+                                    disabled={isLoadingLogin}
                                     sx={{
                                         backgroundColor: '#FF914D',
                                         '&:hover': {
@@ -199,90 +155,17 @@ const LoginComponent: React.FC = () => {
                                         color: '#0159A3',
                                     }}
                                 >
-                                    {isSubmitting ? (
+                                    {isLoadingLogin ? (
                                         <Box className='flex items-center gap-2'>
                                             <Icon icon='mdi:loading' className='animate-spin' />
                                             Memproses...
                                         </Box>
                                     ) : (
-                                        'Login'
+                                        'Masuk'
                                     )}
                                 </Button>
                             </Box>
                         </form>
-
-                        {/* Social Login Separator */}
-                        <Box className='my-6'>
-                            <Box className='flex items-center justify-center mb-4'>
-                                <Box className='flex-grow h-px bg-black/50' />
-                                <Typography
-                                    variant='body2'
-                                    sx={{
-                                        mx: 2,
-                                        fontSize: '14px',
-                                        fontWeight: '500',
-                                        color: '#2E5266',
-                                    }}
-                                >
-                                    log in lebih cepat dengan
-                                </Typography>
-                                <Box className='flex-grow h-px bg-black/50' />
-                            </Box>
-
-                            {/* Social Buttons */}
-                            <Box className='flex justify-center gap-4'>
-                                {/* Apple */}
-                                <Box
-                                    sx={{
-                                        width: 44,
-                                        height: 44,
-                                        border: '1px solid #CFCFCF',
-                                        borderRadius: '8px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        backgroundColor: 'white',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    <Icon icon='mdi:apple' fontSize={24} />
-                                </Box>
-
-                                {/* Google */}
-                                <Box
-                                    sx={{
-                                        width: 44,
-                                        height: 44,
-                                        border: '1px solid #CFCFCF',
-                                        borderRadius: '8px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        backgroundColor: 'white',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    <Icon icon='logos:google-icon' fontSize={24} />
-                                </Box>
-
-                                {/* Facebook */}
-                                <Box
-                                    sx={{
-                                        width: 44,
-                                        height: 44,
-                                        border: '1px solid #CFCFCF',
-                                        borderRadius: '8px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        backgroundColor: 'white',
-                                        cursor: 'pointer',
-                                    }}
-                                >
-                                    <Icon icon='logos:facebook' fontSize={24} />
-                                </Box>
-                            </Box>
-                        </Box>
 
                         {/* Link ke Register */}
                         <Box className='text-center mt-6'>
