@@ -48,9 +48,9 @@ export function CustomTextField<T extends FieldValues = Record<string, any>>(pro
                     <InputAdornment position='end'>
                         <IconButton onClick={() => setShowPassword(prev => !prev)}>
                             {showPassword ? (
-                                <Icon icon='ic:outline-visibility' className='text-base' />
-                            ) : (
                                 <Icon icon='ic:outline-visibility-off' className='text-base' />
+                            ) : (
+                                <Icon icon='ic:outline-visibility' className='text-base' />
                             )}
                         </IconButton>
                     </InputAdornment>
@@ -102,7 +102,6 @@ export function CustomTextField<T extends FieldValues = Record<string, any>>(pro
                             }
                         }}
                         onKeyDown={e => {
-                            // -- Pengkondisian untuk hanya menerima input angka dan navigasi
                             if (inputFormat === 'PHONE') {
                                 if (
                                     !/[0-9]/.test(e.key) &&
@@ -122,6 +121,7 @@ export function CustomTextField<T extends FieldValues = Record<string, any>>(pro
                             endAdornment,
                             autoComplete: 'off',
                             readOnly: isReadOnly,
+                            sx: { backgroundColor: '#ffffff' },
                         }}
                         inputProps={{
                             inputMode: inputFormat === 'PHONE' ? 'numeric' : 'text',
@@ -129,10 +129,11 @@ export function CustomTextField<T extends FieldValues = Record<string, any>>(pro
                         }}
                         variant={variant}
                         sx={{
-                            '& .MuiInputBase-root': {
+                            '& .MuiOutlinedInput-root': {
+                                backgroundColor: '#ffffff',
                                 cursor: isReadOnly ? 'default' : '',
                             },
-                            '& .MuiInputBase-input:hover': {
+                            '& .MuiOutlinedInput-input:hover': {
                                 cursor: isReadOnly ? 'default' : '',
                             },
                         }}

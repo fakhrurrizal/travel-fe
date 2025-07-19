@@ -1,5 +1,5 @@
 import { useApplicationSettings, useAuth } from '@/services'
-import { menu_static, pathnames } from '@/utils'
+import { menu_static, MenuItem, pathnames } from '@/utils'
 import { MenuOutlined } from '@mui/icons-material'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -27,13 +27,30 @@ interface NavbarProps extends PropsWithChildren<any> {
 const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
     const { drawerWidth } = Props
 
+    const user = useAuth(state => state.value.user)
+
     const [currentTime, setCurrentTime] = useState<string>(dayjs().format('DD MMMM YYYY HH:mm:ss'))
 
     const { push } = useRouter()
 
     const logout = useAuth(state => state.logout)
 
-    const list_menu = menu_static
+    const filterMenuByRole = (menus: MenuItem[], roleId: number): MenuItem[] => {
+        return menus
+            .filter(menu => !menu.role || menu.role.includes(roleId))
+            .map(menu => {
+                const filteredChildren = menu.children?.filter(child => {
+                    return !child.role || child.role.includes(roleId)
+                })
+
+                return {
+                    ...menu,
+                    children: filteredChildren ?? [],
+                }
+            })
+    }
+
+    const list_menu = filterMenuByRole(menu_static, Number(user?.role_id))
 
     const [mobileOpen, setMobileOpen] = useState<boolean>(false)
 
@@ -87,18 +104,20 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
                         className='flex justify-between gap-3'
                     >
                         <Box className='page-header flex gap-1 shrink-0'>
-                            <div className='flex-shrink-0 hidden md:block'>
+                            <div className='flex-shrink-0 md:ml-11 py-1'>
                                 <LogoForAppBar />
                             </div>
 
                             <Box
                                 sx={({ breakpoints }) => ({
-                                    width: `${30}px`,
+                                    width: 30,
+                                    display: 'flex',
+                                    marginLeft: 8,
+                                    alignItems: 'center',
                                     [breakpoints.down('md')]: {
                                         display: 'none',
                                     },
                                 })}
-                                className='flex items-center'
                             >
                                 <IconButton onClick={toggleExpandDrawer}>
                                     <MenuOutlined color='primary' />
@@ -107,11 +126,12 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
 
                             <Box
                                 sx={({ breakpoints }) => ({
-                                    [breakpoints.up('md')]: {
-                                        display: 'none',
+                                    display: 'none',
+                                    alignItems: 'center',
+                                    [breakpoints.down('md')]: {
+                                        display: 'flex',
                                     },
                                 })}
-                                className='flex items-center'
                             >
                                 <IconButton onClick={handleDrawerToggle}>
                                     <MenuOutlined color='primary' />
@@ -119,19 +139,8 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
                             </Box>
                         </Box>
 
-                        {/* <div className='flex flex-0 gap-[10px] items-center'>
-                            <p className='text-pr-8 break-keep text-sm font-bold'>{currentTime}</p>
-                        </div> */}
-
                         <Box className='flex justify-end'>
                             <div className='sm:flex items-center hidden h-full'>
-                                {/* <div className='flex items-center flex-col w-max justify-center gap-0 mr-[15px]'>
-                                    <p className='text-pr-8 text-[13px] font-bold'>{user?.fullname || 'Guest'}</p>
-                                    <p className='text-nt-6 text-[11px] leading-none font-semibold'>
-                                        {user?.role?.name || 'No Role'}
-                                    </p>
-                                </div> */}
-
                                 <UserMenu handleLogout={handleLogout} />
                             </div>
                         </Box>
@@ -152,7 +161,7 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
                             boxSizing: 'border-box',
                             backgroundColor: palette.background.default,
                             // borderRight: 'none'
-                            pt: '3px',
+                            pt: '10px',
                             pr: '3px',
                         },
                         [breakpoints.down('md')]: {

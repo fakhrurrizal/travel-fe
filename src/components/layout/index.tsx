@@ -11,7 +11,7 @@ import Navbar from './navbar-default-layout'
 
 dayjs.locale('id')
 
-export const appBarHeight = 65
+export const appBarHeight = 100
 const normalSideBarWidth = 250
 const miniSideBarWidth = 60
 

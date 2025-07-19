@@ -3,7 +3,7 @@ import { alpha, createTheme } from '@mui/material/styles'
 import { useMemo } from 'react'
 
 export const useGetTheme = () => {
-    const primary = '#116487'
+    const primary = '#3FA9E6'
 
     const error = '#ff3a6e'
 
@@ -192,7 +192,7 @@ export const useGetTheme = () => {
                         styleOverrides: {
                             root: {
                                 minWidth: '38px',
-                                color: 'rgba(0, 0, 0, 0.54)',
+                                color: primary,
                             },
                         },
                     },
@@ -215,7 +215,7 @@ export const useGetTheme = () => {
                                 },
 
                                 '&.Mui-selected': {
-                                    backgroundColor: alpha(primary, 0.1),
+                                    backgroundColor: alpha(primary, 0.2),
 
                                     '& .MuiButtonBase-root': {
                                         color: primary,
