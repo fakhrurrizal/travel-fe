@@ -6,6 +6,8 @@ import { styled } from '@mui/material/styles'
 import TextField, { TextFieldProps } from '@mui/material/TextField'
 
 const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
+    const textColor = '#474955'
+
     return {
         alignItems: 'flex-start',
         '& .MuiInputLabel-root': {
@@ -13,11 +15,13 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
             lineHeight: 1.154,
             position: 'relative',
             marginBottom: '3px',
+            color: textColor,
             fontSize: theme.typography.body2.fontSize,
         },
         '& .MuiInputBase-root': {
             borderRadius: 8,
             backgroundColor: '#fff !important',
+            color: textColor,
             border: `1px solid rgba(47,43,61, 0.2)`,
             fontSize: theme.typography.body2.fontSize,
             transition: theme.transitions.create(['border-color', 'box-shadow'], {
@@ -35,42 +39,16 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
             '&.Mui-error': {
                 borderColor: theme.palette.error.main,
             },
-            '&.Mui-focused': {
-                boxShadow: theme.shadows[2],
-                '& .MuiInputBase-input:not(.MuiInputBase-readOnly):not([readonly])::placeholder': {
-                    transform: 'translateX(4px)',
-                },
-                '&.MuiInputBase-colorPrimary': {
-                    borderColor: theme.palette.primary.main,
-                },
-                '&.MuiInputBase-colorSecondary': {
-                    borderColor: theme.palette.secondary.main,
-                },
-                '&.MuiInputBase-colorInfo': {
-                    borderColor: theme.palette.info.main,
-                },
-                '&.MuiInputBase-colorSuccess': {
-                    borderColor: theme.palette.success.main,
-                },
-                '&.MuiInputBase-colorWarning': {
-                    borderColor: theme.palette.warning.main,
-                },
-                '&.MuiInputBase-colorError': {
-                    borderColor: theme.palette.error.main,
-                },
-                '&.Mui-error': {
-                    borderColor: theme.palette.error.main,
-                },
-            },
             '&.Mui-disabled': {
                 backgroundColor: `${theme.palette.action.selected} !important`,
             },
             '& .MuiInputAdornment-root': {
                 marginTop: '0 !important',
+                color: textColor,
             },
         },
         '& .MuiInputBase-input': {
-            color: theme.palette.text.secondary,
+            color: textColor,
             '&:not(textarea)': {
                 padding: '15.5px 13px',
             },
@@ -78,12 +56,13 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
                 padding: '5.5px 13px',
             },
             '&:not(.MuiInputBase-readOnly):not([readonly])::placeholder': {
+                opacity: 0.6,
+                color: textColor,
                 transition: theme.transitions.create(['opacity', 'transform'], {
                     duration: theme.transitions.duration.shorter,
                 }),
             },
-
-            // ** For Autocomplete
+            // Autocomplete input padding fix
             '&.MuiInputBase-inputAdornedStart:not(.MuiAutocomplete-input)': {
                 paddingLeft: 0,
             },
@@ -94,7 +73,7 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
         '& .MuiFormHelperText-root': {
             lineHeight: 1,
             margin: theme.spacing(0.8, 0, 0),
-            color: theme.palette.text.secondary,
+            color: textColor,
             fontSize: theme.typography.subtitle1,
             '&.Mui-error': {
                 color: theme.palette.error.main,
@@ -114,6 +93,7 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
             paddingLeft: '6px !important',
             paddingTop: '7.5px !important',
             paddingBottom: '7.5px !important',
+            color: textColor,
             '&.MuiInputBase-inputSizeSmall': {
                 paddingLeft: '6px !important',
                 paddingTop: '1.5px !important',
@@ -124,6 +104,7 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
             paddingTop: '8px !important',
             paddingLeft: '8px !important',
             paddingBottom: '8px !important',
+            color: textColor,
             '&:not(.MuiInputBase-sizeSmall).MuiInputBase-adornedStart': {
                 paddingLeft: '13px !important',
             },
@@ -141,6 +122,7 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
         // ** For Textarea
         '& .MuiInputBase-multiline': {
             padding: '15.25px 13px',
+            color: textColor,
             '&.MuiInputBase-sizeSmall': {
                 padding: '7.25px 13px',
             },
@@ -160,7 +142,6 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
 })
 
 export const MUITextField = forwardRef((props: TextFieldProps, ref) => {
-    // ** Props
     const { size = 'small', InputLabelProps, ...rest } = props
 
     return (

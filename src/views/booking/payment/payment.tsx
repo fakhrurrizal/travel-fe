@@ -15,7 +15,6 @@ import {
     FormControl,
     Divider,
 } from '@mui/material'
-import Navbar from '../../homepage/navbar'
 
 const PaymentPage = () => {
     const [selectedPayment, setSelectedPayment] = useState('mandiri')
@@ -145,8 +144,6 @@ const PaymentPage = () => {
 
     return (
         <Box sx={{ backgroundColor: '#f8fafc', minHeight: '100vh' }}>
-            <Navbar showAuthButtons={false} isLoggedIn={true} />
-
             <Container maxWidth='lg' sx={{ pt: 15, pb: 4 }}>
                 <Typography variant='h4' sx={{ mb: 4, color: '#1e293b', fontWeight: 'bold' }}>
                     Pembayaran

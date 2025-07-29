@@ -4,11 +4,22 @@ export const endpoints = {
     logout: 'auth/logout',
     login: 'auth/signin',
     register: 'auth/signup',
-
+    trip: 'trip',
+    file: 'file',
+    email_verification: 'auth/email-verification',
     // blog
-    blog: 'blog',
-    blog_category: 'blog/category',
+    destination: 'destination',
+    destination_type: 'destination-type',
+
+    trip_schedule: 'trip-schedule',
+
+    // transportation
+    transportation_company: 'transportation-company',
+    transportation_type: 'transportation-type',
+    transportation_class: 'transportation-class',
+    transportation_terminal: 'transportation-terminal',
+    transportation_route: 'transportation-route',
 
     // files
-    file: 'file',
+    category: 'category',
 } as const

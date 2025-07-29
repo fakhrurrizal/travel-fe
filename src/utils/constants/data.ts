@@ -7,25 +7,53 @@ export const menu_static = [
         children: [],
     },
     {
-        path: '/manage-tour',
+        path: '#',
         name: 'Paket Wisata',
         role: [2],
         icon: 'mdi:package-variant-closed',
         children: [
             {
                 path: '/manage-tour/paket',
-                name: 'Paket',
+                name: 'Paket Wisata',
                 icon: 'mdi:package-variant',
             },
             {
-                path: '/manage-tour/jadwal',
+                path: '/manage-tour/schedule',
                 name: 'Jadwal',
                 icon: 'mdi:calendar-month-outline',
             },
+        ],
+    },
+    {
+        path: '#',
+        name: 'Transportasi',
+        role: [1],
+        icon: 'mdi:car-multiple',
+        children: [
             {
-                path: '/manage-tour/pesanan',
-                name: 'Pesanan',
-                icon: 'mdi:cart-outline',
+                path: '/transportation/company',
+                name: 'Perusahaan Transportasi',
+                icon: 'mdi:domain',
+            },
+            {
+                path: '/transportation/class',
+                name: 'Kelas Transportasi',
+                icon: 'mdi:seat-recline-normal',
+            },
+            {
+                path: '/transportation/schedule',
+                name: 'Jadwal',
+                icon: 'mdi:calendar-clock',
+            },
+            {
+                path: '/transportation/terminal',
+                name: 'Terminal',
+                icon: 'mdi:bus-stop',
+            },
+            {
+                path: '/transportation/route',
+                name: 'Rute',
+                icon: 'mdi:map-marker-path',
             },
         ],
     },

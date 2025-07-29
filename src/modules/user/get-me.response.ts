@@ -5,6 +5,7 @@ export interface ResponseGetMe {
         id: number
         fullname: string
         email: string
+        avatar: string
         phone: string
         address: string
         village: string

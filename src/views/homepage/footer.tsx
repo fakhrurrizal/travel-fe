@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
         {
             icon: 'mdi:email',
             title: 'Email',
-            info: 'example@gmail.com',
+            info: 'support@tripfy.com',
             color: '#f97316',
         },
     ]

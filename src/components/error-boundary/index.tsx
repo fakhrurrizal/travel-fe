@@ -1,5 +1,4 @@
 import { goBackAndRefresh } from '@/utils'
-import Image from 'next/image'
 import React, { Component, ErrorInfo, ReactNode } from 'react'
 
 interface Props {
@@ -28,9 +27,6 @@ class ErrorBoundary extends Component<Props, State> {
             return (
                 <div className='flex items-center'>
                     <div className='container mx-auto py-10 flex items-center justify-center flex-col'>
-                        <div className='mt-10'>
-                            <Image width={500} height={400} alt='trouble' src='/assets/illustration/trouble.svg' />
-                        </div>
                         <h1 className='text-primary font-bold text-center text-[calc(1.25rem+2.7vw)] xl:text-[42px] mb-3'>
                             Internal Server Error
                         </h1>

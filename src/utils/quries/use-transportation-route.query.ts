@@ -1,0 +1,72 @@
+import { axiosInterceptor } from '@/config'
+import { PaginationArgs } from '@/interfaces'
+import { useQuery } from '@tanstack/react-query'
+import queryString from 'query-string'
+import { getApi } from '../helpers'
+
+export const useTransportationRouteParams = (args: PaginationArgs<any>) => {
+    const {
+        status,
+        pageIndex,
+        pageSize,
+        sort,
+        searchValue,
+        order,
+        transportationType,
+        arrivalTerminal,
+        departureTerminal,
+        transportationCompany,
+    } = args
+
+    const query: Record<string, string | number> = {
+        limit: Number(pageSize),
+        page: Number(pageIndex),
+    }
+
+    if (order) {
+        query['order'] = order as any
+    }
+
+    if (status) {
+        query['status'] = status
+    }
+
+    if (searchValue) {
+        query['search'] = searchValue
+    }
+
+    if (transportationType) {
+        query['transportation_type_id'] = transportationType
+    }
+
+    if (transportationCompany) {
+        query['transportation_company_id'] = transportationCompany
+    }
+
+    if (departureTerminal) {
+        query['departure_terminal_id'] = departureTerminal
+    }
+
+    if (arrivalTerminal) {
+        query['arrival_terminal_id'] = arrivalTerminal
+    }
+
+    if (sort) {
+        query['sort'] = sort
+    }
+
+    const endpoint = queryString.stringifyUrl({
+        url: getApi('transportation_route'),
+        query,
+    })
+
+    return useQuery({
+        queryFn: async () => {
+            const res = await axiosInterceptor.get<any>(endpoint)
+
+            return res.data
+        },
+        refetchOnWindowFocus: false,
+        queryKey: ['LIST_TRANSPORTATION_ROUTE_ALL', query, args],
+    })
+}

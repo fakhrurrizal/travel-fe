@@ -31,7 +31,7 @@ export function StaticAutoComplete<Form extends FieldValues, Option = GeneralOpt
                     <MuiAutocomplete<Option, boolean, boolean, boolean>
                         {...moreField}
                         {...muiAutoCompleteProps}
-                        size='small'
+                        size='medium'
                         onChange={(e, value, ...restEvent) => {
                             if (onValueChange) {
                                 onValueChange(e, value, ...restEvent)

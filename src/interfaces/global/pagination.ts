@@ -5,6 +5,10 @@ export interface PaginationArgs<T = any> {
     sort?: Order
     order?: keyof T
     status?: any
+    transportationType?: string
+    transportationCompany?: string
+    arrivalTerminal?: string
+    departureTerminal?: string
 }
 
 export type Order = 'desc' | 'asc'

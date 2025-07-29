@@ -1,23 +1,22 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import { Icon } from '@iconify/react'
 import {
     Box,
-    Container,
-    Typography,
-    Paper,
-    Grid,
     Button,
+    Container,
     Dialog,
-    DialogTitle,
-    DialogContent,
     DialogActions,
-    TextField,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    Paper,
     Rating,
+    TextField,
+    Typography,
 } from '@mui/material'
-import { Icon } from '@iconify/react'
 import Image from 'next/image'
-import Navbar from '../../homepage/navbar'
+import React, { useRef, useState } from 'react'
 
 const BookingHistoryPage = () => {
     const bookingData = [
@@ -167,7 +166,6 @@ const BookingHistoryPage = () => {
 
     return (
         <Box sx={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
-            <Navbar showAuthButtons={false} isLoggedIn={true} />
             <Container maxWidth='lg' sx={{ py: 4 }}>
                 <Typography
                     variant='h4'

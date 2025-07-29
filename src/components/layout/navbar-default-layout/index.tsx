@@ -1,5 +1,5 @@
 import { useApplicationSettings, useAuth } from '@/services'
-import { menu_static, MenuItem, pathnames } from '@/utils'
+import { menu_static, pathnames } from '@/utils'
 import { MenuOutlined } from '@mui/icons-material'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -27,30 +27,13 @@ interface NavbarProps extends PropsWithChildren<any> {
 const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
     const { drawerWidth } = Props
 
-    const user = useAuth(state => state.value.user)
-
     const [currentTime, setCurrentTime] = useState<string>(dayjs().format('DD MMMM YYYY HH:mm:ss'))
 
     const { push } = useRouter()
 
     const logout = useAuth(state => state.logout)
 
-    const filterMenuByRole = (menus: MenuItem[], roleId: number): MenuItem[] => {
-        return menus
-            .filter(menu => !menu.role || menu.role.includes(roleId))
-            .map(menu => {
-                const filteredChildren = menu.children?.filter(child => {
-                    return !child.role || child.role.includes(roleId)
-                })
-
-                return {
-                    ...menu,
-                    children: filteredChildren ?? [],
-                }
-            })
-    }
-
-    const list_menu = filterMenuByRole(menu_static, Number(user?.role_id))
+    const list_menu = menu_static
 
     const [mobileOpen, setMobileOpen] = useState<boolean>(false)
 
@@ -101,10 +84,10 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
                         sx={() => ({
                             minHeight: appBarHeight + 'px !important',
                         })}
-                        className='flex justify-between gap-3'
+                        className='flex justify-between gap-1'
                     >
                         <Box className='page-header flex gap-1 shrink-0'>
-                            <div className='flex-shrink-0 md:ml-11 py-1'>
+                            <div className='flex-shrink-0 hidden md:block'>
                                 <LogoForAppBar />
                             </div>
 
@@ -161,7 +144,7 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
                             boxSizing: 'border-box',
                             backgroundColor: palette.background.default,
                             // borderRight: 'none'
-                            pt: '10px',
+                            pt: '3px',
                             pr: '3px',
                         },
                         [breakpoints.down('md')]: {
@@ -185,7 +168,6 @@ const Navbar: React.FC<NavbarProps> = (Props: NavbarProps) => {
                     )}
                 </Drawer>
 
-                {/* DRAWER FOR MOBILE */}
                 <Drawer
                     variant='temporary'
                     open={mobileOpen}
