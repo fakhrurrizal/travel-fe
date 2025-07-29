@@ -88,7 +88,6 @@ export function ServerSideAutoComplete<
                 url: idEndpoint ? `${getApi(endpoint)}/${idEndpoint}` : getApi(endpoint),
                 query: {
                     page: pageParam as number,
-                    status: true,
                     ...queryEndpoint,
                     ...(searchValue ? { search: searchValue, limit: 20 } : { limit: 20 }),
                 },
@@ -140,8 +139,6 @@ export function ServerSideAutoComplete<
                 const error = Boolean(fieldState?.error)
                 const helperText = fieldState?.error?.message
 
-                console.log(field.value)
-
                 return (
                     <MuiAutocomplete<Option, boolean, boolean, boolean>
                         {...muiAutoCompleteProps}
@@ -149,12 +146,12 @@ export function ServerSideAutoComplete<
                         value={field.value}
                         readOnly={readOnly}
                         defaultValue={defaultValue}
+                        isOptionEqualToValue={(option: any, value: any) => option.id === value.id}
                         ListboxProps={{
                             onScroll: handleScroll,
                             className: ' scrollbar scrollbar-w-2 scrollbar-thumb-rounded-full  scrollbar-thumb-pr-10',
                         }}
                         onChange={(e, value: any, ...restEvent) => {
-                            console.log('autocomplete', value)
                             const valueType = value ? typeof value?.[value?.length - 1 || 0] : null
 
                             if (valueType == 'string') {
@@ -229,7 +226,7 @@ export function ServerSideAutoComplete<
                                 {...params}
                                 label={label}
                                 error={error}
-                                size='small'
+                                size='medium'
                                 onChange={event => {
                                     setInputValue(event.target.value)
                                 }}

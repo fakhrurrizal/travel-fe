@@ -1,4 +1,4 @@
-import { CustomTextField } from '@/components'
+import CustomTextField from '@/components/text-field/custom-text-field'
 import { axiosInterceptor } from '@/config'
 import { useLoginMutation } from '@/modules/auth/login'
 import { useAuth } from '@/services'
@@ -47,6 +47,7 @@ const LoginComponent: React.FC = () => {
             setAuth({ accessToken, user })
             axiosInterceptor.defaults.headers.common['Authorization'] = accessToken
             axios.defaults.headers.common['Authorization'] = accessToken
+            console.log('user,', user)
             router.push('/dashboard')
         } catch (error) {
             console.error('Login error:', error)
@@ -152,7 +153,7 @@ const LoginComponent: React.FC = () => {
                                         fontSize: '16px',
                                         fontWeight: '600',
                                         textTransform: 'none',
-                                        color: '#0159A3',
+                                        color: 'white',
                                     }}
                                 >
                                     {isLoadingLogin ? (

@@ -56,16 +56,12 @@ const Navbar: React.FC<NavbarProps> = ({
     }
 
     const handleLogout = () => {
-        // Implementasi logout logic di sini
-        console.log('Logout clicked')
         handleAvatarClose()
-        // Redirect ke halaman login atau home
         router.push('/')
     }
 
     const handleProfile = () => {
         // Redirect ke halaman profile
-        console.log('Profile clicked')
         handleAvatarClose()
         router.push('/profile')
     }

@@ -1,124 +1,162 @@
-// components/FaqSection.tsx
-'use client'
-
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import {
+    Box,
     Container,
     Typography,
-    Box,
-    Paper,
     Accordion,
     AccordionSummary,
     AccordionDetails,
-    Button,
     Grid,
+    Paper,
     Chip,
+    Button,
+    Stack,
 } from '@mui/material'
 import { Icon } from '@iconify/react'
 
-const FaqSection: React.FC = () => {
-    const [expanded, setExpanded] = useState<string | false>(false)
-    const [activeCategory, setActiveCategory] = useState<string>('all')
+// Type definitions
+interface FAQItem {
+    id: number
+    question: string
+    answer: string
+    category: string
+    tags: string[]
+}
 
-    const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-        setExpanded(isExpanded ? panel : false)
-    }
+interface FAQCategory {
+    id: string
+    name: string
+    icon: string
+    color: string
+}
 
-    const handleCategoryChange = (categoryId: string) => {
-        setActiveCategory(categoryId)
-        setExpanded(false) // Close any open accordion when switching categories
-    }
+const FAQSection: React.FC = () => {
+    const [expandedAccordion, setExpandedAccordion] = useState<number | false>(false)
+    const [selectedCategory, setSelectedCategory] = useState<string>('all')
 
-    // Filter categories
-    const categories = [
-        { id: 'all', label: 'Semua' },
-        { id: 'booking', label: 'Pemesanan' },
-        { id: 'payment', label: 'Pembayaran' },
-        { id: 'trip', label: 'Perjalanan' },
-        { id: 'policy', label: 'Kebijakan' },
+    // FAQ Categories
+    const categories: FAQCategory[] = [
+        { id: 'all', name: 'Semua', icon: 'mdi:help-circle', color: '#0ea5e9' },
+        { id: 'booking', name: 'Pemesanan', icon: 'mdi:calendar-check', color: '#10b981' },
+        { id: 'payment', name: 'Pembayaran', icon: 'mdi:credit-card', color: '#f59e0b' },
+        { id: 'travel', name: 'Perjalanan', icon: 'mdi:airplane', color: '#8b5cf6' },
+        { id: 'policy', name: 'Kebijakan', icon: 'mdi:shield-check', color: '#ef4444' },
     ]
 
-    // FAQ data with colors and categories
-    const faqs = [
+    // FAQ Data
+    const faqData: FAQItem[] = [
         {
-            id: 'faq1',
+            id: 1,
             question: 'Bagaimana cara melakukan pemesanan paket tour?',
-            answer: 'Anda dapat melakukan pemesanan paket tour melalui website kami dengan memilih destinasi yang diinginkan, mengisi data diri, dan melakukan pembayaran.',
-            color: '#10b981', // green
+            answer: "Anda dapat melakukan pemesanan dengan mudah melalui website kami. Pilih destinasi yang diinginkan, tentukan tanggal keberangkatan, jumlah peserta, lalu klik 'Pesan Sekarang'. Isi formulir pemesanan dengan lengkap dan lakukan pembayaran sesuai instruksi. Tim kami akan mengkonfirmasi pemesanan Anda dalam 24 jam.",
             category: 'booking',
+            tags: ['pemesanan', 'booking', 'cara pesan'],
         },
         {
-            id: 'faq2',
+            id: 2,
             question: 'Apa saja metode pembayaran yang tersedia?',
-            answer: 'Kami menerima pembayaran melalui transfer bank, kartu kredit, e-wallet (GoPay, OVO, Dana), dan cicilan 0%.',
-            color: '#f97316', // orange
+            answer: 'Kami menerima berbagai metode pembayaran untuk kemudahan Anda: Transfer Bank (BCA, BNI, BRI, Mandiri), E-Wallet (GoPay, OVO, DANA, ShopeePay), Virtual Account, dan Kartu Kredit/Debit. Pembayaran dapat dilakukan secara penuh atau dengan sistem cicilan untuk paket tertentu.',
             category: 'payment',
+            tags: ['pembayaran', 'transfer', 'e-wallet'],
         },
         {
-            id: 'faq3',
+            id: 3,
             question: 'Berapa lama sebelum keberangkatan saya harus melakukan pemesanan?',
-            answer: 'Minimal 3 hari sebelum keberangkatan untuk paket domestik dan 7 hari untuk paket internasional.',
-            color: '#10b981', // green
+            answer: 'Untuk hasil terbaik, kami merekomendasikan pemesanan minimal 2-3 minggu sebelum keberangkatan. Namun, untuk destinasi populer atau musim liburan, sebaiknya pesan 1-2 bulan sebelumnya. Pemesanan mendadak (kurang dari 1 minggu) tetap dapat diproses tergantung ketersediaan.',
             category: 'booking',
+            tags: ['jadwal', 'booking', 'waktu pesan'],
         },
         {
-            id: 'faq4',
+            id: 4,
             question: 'Apakah harga sudah termasuk semua fasilitas yang disebutkan?',
-            answer: 'Ya, harga paket sudah termasuk semua fasilitas yang tercantum dalam deskripsi paket tour.',
-            color: '#f97316', // orange
+            answer: 'Ya, harga paket tour sudah termasuk semua fasilitas yang tercantum dalam deskripsi paket seperti transportasi, akomodasi, makan sesuai program, tiket masuk objek wisata, dan guide lokal. Biaya tambahan yang mungkin timbul akan dijelaskan secara transparan di awal pemesanan.',
             category: 'payment',
+            tags: ['harga', 'fasilitas', 'include'],
         },
         {
-            id: 'faq5',
+            id: 5,
             question: 'Bagaimana jika cuaca buruk saat perjalanan?',
-            answer: 'Kami akan memberikan alternatif aktivitas indoor atau mengatur ulang jadwal sesuai kondisi cuaca.',
-            color: '#8b5cf6', // purple
-            category: 'trip',
+            answer: 'Keselamatan adalah prioritas utama kami. Jika terjadi cuaca buruk yang dapat membahayakan perjalanan, kami akan melakukan penyesuaian itinerary atau menunda aktivitas tertentu. Untuk kasus force majeure, kami akan memberikan alternatif aktivitas atau kompensasi sesuai kebijakan yang berlaku.',
+            category: 'travel',
+            tags: ['cuaca', 'safety', 'force majeure'],
         },
         {
-            id: 'faq6',
+            id: 6,
             question: 'Apakah ada kebijakan refund atau reschedule?',
-            answer: 'Ya, kami memiliki kebijakan refund dan reschedule sesuai dengan syarat dan ketentuan yang berlaku.',
-            color: '#ef4444', // red
+            answer: 'Kami memiliki kebijakan refund dan reschedule yang fleksibel. Pembatalan 30 hari sebelum keberangkatan: refund 75%, 14-29 hari: refund 50%, 7-13 hari: refund 25%, kurang dari 7 hari: tidak ada refund. Reschedule dapat dilakukan maksimal 2 kali dengan biaya admin tertentu.',
             category: 'policy',
+            tags: ['refund', 'reschedule', 'pembatalan'],
         },
         {
-            id: 'faq7',
+            id: 7,
             question: 'Apakah tersedia paket untuk solo traveler?',
-            answer: 'Ya, kami menyediakan paket khusus untuk solo traveler dengan harga yang sudah disesuaikan.',
-            color: '#8b5cf6', // purple
-            category: 'trip',
+            answer: 'Tentu! Kami memiliki paket khusus untuk solo traveler dengan harga yang kompetitif. Untuk beberapa destinasi, Anda dapat bergabung dengan grup yang sudah ada atau kami dapat mengatur private tour sesuai kebutuhan. Konsultasikan dengan tim kami untuk mendapatkan rekomendasi terbaik.',
+            category: 'travel',
+            tags: ['solo traveler', 'private tour', 'grup'],
         },
         {
-            id: 'faq8',
+            id: 8,
             question: 'Dokumen apa saja yang diperlukan untuk perjalanan?',
-            answer: 'Untuk domestik: KTP/SIM. Untuk internasional: Paspor, visa (jika diperlukan), dan surat vaksinasi.',
-            color: '#8b5cf6', // purple
-            category: 'trip',
+            answer: 'Untuk perjalanan domestik, Anda memerlukan KTP/SIM/Paspor yang masih berlaku. Untuk destinasi tertentu mungkin diperlukan surat keterangan kesehatan. Khusus untuk pendakian gunung, diperlukan surat keterangan sehat dari dokter. Kami akan memberikan checklist lengkap setelah pemesanan dikonfirmasi.',
+            category: 'travel',
+            tags: ['dokumen', 'persyaratan', 'KTP'],
         },
         {
-            id: 'faq9',
+            id: 9,
             question: 'Bagaimana jika ada peserta yang berkebutuhan khusus?',
-            answer: 'Silakan informasikan kepada kami saat pemesanan agar kami dapat menyiapkan fasilitas yang sesuai.',
-            color: '#8b5cf6', // purple
-            category: 'trip',
+            answer: 'Kami berkomitmen untuk memberikan pelayanan inklusif. Informasikan kebutuhan khusus Anda saat pemesanan, seperti aksesibilitas kursi roda, diet khusus, atau kebutuhan medis. Tim kami akan memastikan semua akomodasi dan fasilitas dapat mengakomodasi kebutuhan tersebut.',
+            category: 'travel',
+            tags: ['aksesibilitas', 'kebutuhan khusus', 'diet'],
         },
         {
-            id: 'faq10',
+            id: 10,
             question: 'Bagaimana sistem pembayaran cicilan bekerja?',
-            answer: 'Kami bekerja sama dengan berbagai penyedia cicilan 0% seperti Kredivo, Akulaku, dan kartu kredit.',
-            color: '#f97316', // orange
+            answer: 'Sistem cicilan tersedia untuk paket dengan nilai minimal Rp 2.000.000. Anda dapat membayar dengan skema 2x atau 3x cicilan tanpa bunga. Cicilan pertama minimal 50% dari total harga, sisanya dapat dibayar sesuai kesepakatan. Pelunasan harus selesai maksimal 7 hari sebelum keberangkatan.',
             category: 'payment',
+            tags: ['cicilan', 'installment', 'pembayaran'],
         },
     ]
 
-    // Filter FAQs based on active category
-    const filteredFaqs = activeCategory === 'all' ? faqs : faqs.filter(faq => faq.category === activeCategory)
+    const handleAccordionChange = useCallback(
+        (panel: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+            setExpandedAccordion(isExpanded ? panel : false)
+        },
+        []
+    )
+
+    const handleCategoryChange = useCallback((categoryId: string) => {
+        setSelectedCategory(categoryId)
+        setExpandedAccordion(false) // Reset expanded accordion when category changes
+    }, [])
+
+    const filteredFAQs = selectedCategory === 'all' ? faqData : faqData.filter(faq => faq.category === selectedCategory)
+
+    const getIconColor = (categoryId: string) => {
+        const category = categories.find(cat => cat.id === categoryId)
+
+        return category ? category.color : '#64748b'
+    }
+
+    const generateWhatsAppLink = () => {
+        const phoneNumber = '6285183266453'
+
+        const message = `
+            Halo, saya ingin bertanya
+    
+          `.trim()
+
+        return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+    }
+
+    const handleConfirmPayment = () => {
+        const whatsappUrl = generateWhatsAppLink()
+        window.open(whatsappUrl, '_blank')
+    }
 
     return (
-        <Box sx={{ py: 6, backgroundColor: '#f8fafc' }}>
-            <Container maxWidth='xl'>
-                {/* Header */}
+        <Box sx={{ py: 8, backgroundColor: '#ffffff' }}>
+            <Container maxWidth='lg'>
+                {/* Header Section */}
                 <Box sx={{ textAlign: 'center', mb: 6 }}>
                     <Typography
                         variant='h3'
@@ -127,7 +165,7 @@ const FaqSection: React.FC = () => {
                             fontWeight: 'bold',
                             color: '#1e293b',
                             mb: 2,
-                            fontSize: { xs: '1.8rem', md: '2.5rem' },
+                            fontSize: { xs: '1.875rem', md: '2.5rem' },
                         }}
                     >
                         Pertanyaan yang Sering Diajukan
@@ -139,305 +177,329 @@ const FaqSection: React.FC = () => {
                             fontSize: '1.1rem',
                             maxWidth: '600px',
                             mx: 'auto',
+                            mb: 4,
                         }}
                     >
-                        Temukan jawaban untuk pertanyaan yang paling sering
-                        <br />
-                        ditanyakan tentang layanan kami
+                        Temukan jawaban untuk pertanyaan yang paling sering ditanyakan tentang layanan kami
                     </Typography>
-                </Box>
 
-                {/* Filter Categories */}
-                <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4, flexWrap: 'wrap', gap: 1 }}>
-                    {categories.map(category => (
-                        <Chip
-                            key={category.id}
-                            label={category.label}
-                            variant={activeCategory === category.id ? 'filled' : 'outlined'}
-                            onClick={() => handleCategoryChange(category.id)}
+                    {/* Category Filter */}
+                    <Paper
+                        elevation={0}
+                        sx={{
+                            display: 'inline-block',
+                            borderRadius: 3,
+                            border: '1px solid #e2e8f0',
+                            overflow: 'hidden',
+                            p: 1,
+                            mb: 4,
+                        }}
+                    >
+                        <Stack
+                            direction='row'
+                            spacing={1}
                             sx={{
-                                backgroundColor: activeCategory === category.id ? '#f97316' : 'transparent',
-                                color: activeCategory === category.id ? 'white' : '#64748b',
-                                fontWeight: activeCategory === category.id ? 'bold' : 'normal',
-                                cursor: 'pointer',
-                                '&:hover': {
-                                    backgroundColor:
-                                        activeCategory === category.id ? '#ea580c' : 'rgba(249, 115, 22, 0.1)',
-                                },
-                                px: 2,
-                                py: 1,
+                                flexWrap: 'wrap',
+                                gap: 1,
+                                justifyContent: 'center',
                             }}
-                        />
-                    ))}
+                        >
+                            {categories.map(category => (
+                                <Button
+                                    key={category.id}
+                                    onClick={() => handleCategoryChange(category.id)}
+                                    variant={selectedCategory === category.id ? 'contained' : 'text'}
+                                    startIcon={<Icon icon={category.icon} width={18} height={18} />}
+                                    sx={{
+                                        textTransform: 'none',
+                                        minWidth: { xs: 'auto', sm: 120 },
+                                        height: 40,
+                                        borderRadius: 2,
+                                        fontWeight: 'medium',
+                                        fontSize: '0.875rem',
+                                        px: { xs: 2, sm: 3 },
+                                        ...(selectedCategory === category.id
+                                            ? {
+                                                  backgroundColor: category.color,
+                                                  color: 'white',
+                                                  '&:hover': {
+                                                      backgroundColor: category.color,
+                                                      filter: 'brightness(0.9)',
+                                                  },
+                                              }
+                                            : {
+                                                  color: '#64748b',
+                                                  '&:hover': {
+                                                      backgroundColor: '#f1f5f9',
+                                                      color: category.color,
+                                                  },
+                                              }),
+                                    }}
+                                >
+                                    {category.name}
+                                </Button>
+                            ))}
+                        </Stack>
+                    </Paper>
                 </Box>
 
                 <Grid container spacing={4}>
                     {/* FAQ List */}
                     <Grid item xs={12} md={8}>
-                        <Typography
-                            variant='h5'
-                            sx={{
-                                fontWeight: 'bold',
-                                color: '#1e293b',
-                                mb: 3,
-                            }}
-                        >
-                            {filteredFaqs.length} Pertanyaan
-                            {activeCategory !== 'all' && (
-                                <span style={{ color: '#f97316', marginLeft: '8px' }}>
-                                    - {categories.find(cat => cat.id === activeCategory)?.label}
-                                </span>
-                            )}
-                        </Typography>
+                        <Box sx={{ mb: 2 }}>
+                            <Typography
+                                variant='h6'
+                                sx={{
+                                    color: '#1e293b',
+                                    fontWeight: 'bold',
+                                    mb: 1,
+                                }}
+                            >
+                                {selectedCategory === 'all'
+                                    ? `${filteredFAQs.length} Pertanyaan`
+                                    : `${filteredFAQs.length} Pertanyaan tentang ${categories.find(cat => cat.id === selectedCategory)?.name}`}
+                            </Typography>
+                            <Box sx={{ height: 2, backgroundColor: '#e2e8f0', borderRadius: 1 }} />
+                        </Box>
 
-                        <Box sx={{ space: 2 }}>
-                            {filteredFaqs.map(faq => (
+                        <Stack spacing={2}>
+                            {filteredFAQs.map(faq => (
                                 <Accordion
                                     key={faq.id}
-                                    expanded={expanded === faq.id}
-                                    onChange={handleChange(faq.id)}
+                                    expanded={expandedAccordion === faq.id}
+                                    onChange={handleAccordionChange(faq.id)}
                                     sx={{
-                                        mb: 1,
+                                        borderRadius: 2,
                                         border: '1px solid #e2e8f0',
-                                        borderRadius: '12px !important',
+                                        boxShadow: 'none',
                                         '&:before': {
                                             display: 'none',
                                         },
                                         '&.Mui-expanded': {
-                                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                                            margin: '0 0 8px 0',
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                                         },
                                     }}
                                 >
                                     <AccordionSummary
                                         expandIcon={
                                             <Icon
-                                                icon='mdi:plus'
+                                                icon={expandedAccordion === faq.id ? 'mdi:minus' : 'mdi:plus'}
                                                 width={20}
                                                 height={20}
-                                                color={faq.color}
-                                                style={{
-                                                    transform: expanded === faq.id ? 'rotate(45deg)' : 'rotate(0deg)',
-                                                    transition: 'transform 0.3s ease',
-                                                }}
+                                                color={getIconColor(faq.category)}
                                             />
                                         }
                                         sx={{
-                                            py: 2,
                                             '& .MuiAccordionSummary-content': {
+                                                margin: '12px 0',
                                                 alignItems: 'center',
+                                            },
+                                            '&.Mui-expanded': {
+                                                backgroundColor: '#f8fafc',
                                             },
                                         }}
                                     >
-                                        <Box
-                                            sx={{
-                                                width: 4,
-                                                height: 20,
-                                                backgroundColor: faq.color,
-                                                borderRadius: 2,
-                                                mr: 2,
-                                            }}
-                                        />
-                                        <Typography
-                                            variant='h6'
-                                            sx={{
-                                                fontWeight: 'bold',
-                                                color: '#1e293b',
-                                                fontSize: '1rem',
-                                            }}
-                                        >
-                                            {faq.question}
-                                        </Typography>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                            <Box
+                                                sx={{
+                                                    width: 8,
+                                                    height: 8,
+                                                    borderRadius: '50%',
+                                                    backgroundColor: getIconColor(faq.category),
+                                                    mr: 2,
+                                                    flexShrink: 0,
+                                                }}
+                                            />
+                                            <Typography
+                                                variant='body1'
+                                                sx={{
+                                                    fontWeight: 'medium',
+                                                    color: '#1e293b',
+                                                    fontSize: { xs: '0.95rem', md: '1rem' },
+                                                }}
+                                            >
+                                                {faq.question}
+                                            </Typography>
+                                        </Box>
                                     </AccordionSummary>
-                                    <AccordionDetails sx={{ pt: 0, pb: 2 }}>
+                                    <AccordionDetails
+                                        sx={{
+                                            pt: 0,
+                                            pb: 3,
+                                            px: 3,
+                                            borderTop: '1px solid #f1f5f9',
+                                        }}
+                                    >
                                         <Typography
-                                            variant='body1'
+                                            variant='body2'
                                             sx={{
                                                 color: '#64748b',
-                                                lineHeight: 1.6,
-                                                ml: 3,
+                                                lineHeight: 1.7,
+                                                mb: 2,
+                                                pl: 4,
                                             }}
                                         >
                                             {faq.answer}
                                         </Typography>
+                                        <Box sx={{ pl: 4 }}>
+                                            <Stack direction='row' spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                                                {faq.tags.map((tag, index) => (
+                                                    <Chip
+                                                        key={index}
+                                                        label={tag}
+                                                        size='small'
+                                                        sx={{
+                                                            backgroundColor: '#f1f5f9',
+                                                            color: '#64748b',
+                                                            fontSize: '0.75rem',
+                                                            height: 24,
+                                                            '&:hover': {
+                                                                backgroundColor: '#e2e8f0',
+                                                            },
+                                                        }}
+                                                    />
+                                                ))}
+                                            </Stack>
+                                        </Box>
                                     </AccordionDetails>
                                 </Accordion>
                             ))}
-                        </Box>
+                        </Stack>
                     </Grid>
 
                     {/* Sidebar */}
                     <Grid item xs={12} md={4}>
-                        {/* Customer Support Widget */}
-                        <Paper
-                            sx={{
-                                p: 3,
-                                borderRadius: 3,
-                                background: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)',
-                                color: 'white',
-                                textAlign: 'center',
-                                mb: 3,
-                                mt: 19,
-                            }}
-                        >
-                            <Box
+                        <Stack spacing={3}>
+                            {/* Contact Support Card */}
+                            <Paper
+                                elevation={0}
                                 sx={{
-                                    width: 90,
-                                    height: 90,
-                                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                                    borderRadius: '50%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    mx: 'auto',
-                                    mb: 2,
+                                    p: 4,
+                                    borderRadius: 3,
+                                    border: '1px solid #e2e8f0',
+                                    background: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
+                                    color: 'white',
+                                    textAlign: 'center',
                                 }}
                             >
-                                <Icon icon='mdi:headset' width={30} height={30} />
-                            </Box>
-                            <Typography
-                                variant='h6'
-                                sx={{
-                                    fontWeight: 'bold',
-                                    mb: 1,
-                                }}
-                            >
-                                Masih ada Pertanyaan?
-                            </Typography>
-                            <Typography
-                                variant='body2'
-                                sx={{
-                                    mb: 2,
-                                    opacity: 0.9,
-                                }}
-                            >
-                                Tim customer service kami siap membantu Anda 24/7
-                            </Typography>
-                            <Button
-                                variant='contained'
-                                startIcon={<Icon icon='mdi:whatsapp' width={20} height={20} />}
-                                sx={{
-                                    backgroundColor: 'white',
-                                    color: '#3b82f6',
-                                    fontWeight: 'bold',
-                                    '&:hover': {
-                                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                                    },
-                                    borderRadius: 2,
-                                    px: 3,
-                                }}
-                            >
-                                Hubungi Kami
-                            </Button>
-                        </Paper>
-
-                        {/* Useful Links */}
-                        <Paper
-                            sx={{
-                                p: 3,
-                                borderRadius: 3,
-                                border: '1px solid #e2e8f0',
-                                mb: 3,
-                            }}
-                        >
-                            <Typography
-                                variant='h6'
-                                sx={{
-                                    fontWeight: 'bold',
-                                    color: '#1e293b',
-                                    mb: 2,
-                                }}
-                            >
-                                Link Berguna
-                            </Typography>
-                            <Box sx={{ space: 1 }}>
-                                {[
-                                    { icon: 'mdi:file-document-outline', text: 'Syarat & Ketentuan' },
-                                    { icon: 'mdi:shield-check-outline', text: 'Kebijakan Privasi' },
-                                    { icon: 'mdi:credit-card-outline', text: 'Cara Pemesanan' },
-                                    { icon: 'mdi:map-marker-outline', text: 'Panduan Perjalanan' },
-                                ].map((item, index) => (
-                                    <Box
-                                        key={index}
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            py: 1,
-                                            cursor: 'pointer',
-                                            '&:hover': {
-                                                color: '#3b82f6',
-                                            },
-                                        }}
-                                    >
-                                        <Icon icon={item.icon} width={16} height={16} style={{ marginRight: 8 }} />
-                                        <Typography variant='body2'>{item.text}</Typography>
-                                    </Box>
-                                ))}
-                            </Box>
-                        </Paper>
-
-                        {/* Statistics */}
-                        <Paper
-                            sx={{
-                                p: 3,
-                                borderRadius: 3,
-                                border: '1px solid #e2e8f0',
-                            }}
-                        >
-                            <Typography
-                                variant='h6'
-                                sx={{
-                                    fontWeight: 'bold',
-                                    color: '#1e293b',
-                                    mb: 2,
-                                }}
-                            >
-                                Statistik Bantuan
-                            </Typography>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Box sx={{ textAlign: 'center' }}>
-                                    <Typography
-                                        variant='h4'
-                                        sx={{
-                                            fontWeight: 'bold',
-                                            color: '#3b82f6',
-                                            mb: 0.5,
-                                        }}
-                                    >
-                                        98%
-                                    </Typography>
-                                    <Typography
-                                        variant='body2'
-                                        sx={{
-                                            color: '#64748b',
-                                            fontSize: '0.8rem',
-                                        }}
-                                    >
-                                        Masalah Terselesaikan
-                                    </Typography>
+                                <Box
+                                    sx={{
+                                        width: 60,
+                                        height: 60,
+                                        borderRadius: '50%',
+                                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        mx: 'auto',
+                                        mb: 2,
+                                    }}
+                                >
+                                    <Icon icon='mdi:headset' width={28} height={28} />
                                 </Box>
-                                <Box sx={{ textAlign: 'center' }}>
-                                    <Typography
-                                        variant='h4'
-                                        sx={{
-                                            fontWeight: 'bold',
-                                            color: '#10b981',
-                                            mb: 0.5,
-                                        }}
-                                    >
-                                        &lt;5m
-                                    </Typography>
-                                    <Typography
-                                        variant='body2'
-                                        sx={{
-                                            color: '#64748b',
-                                            fontSize: '0.8rem',
-                                        }}
-                                    >
-                                        Waktu Respon
-                                    </Typography>
-                                </Box>
-                            </Box>
-                        </Paper>
+                                <Typography variant='h6' sx={{ fontWeight: 'bold', mb: 1 }}>
+                                    Masih Ada Pertanyaan?
+                                </Typography>
+                                <Typography variant='body2' sx={{ mb: 3, opacity: 0.9 }}>
+                                    Tim customer service kami siap membantu Anda 24/7
+                                </Typography>
+                                <Button
+                                    variant='contained'
+                                    fullWidth
+                                    onClick={handleConfirmPayment}
+                                    sx={{
+                                        backgroundColor: 'white',
+                                        color: '#0ea5e9',
+                                        fontWeight: 'bold',
+                                        '&:hover': {
+                                            backgroundColor: '#f8fafc',
+                                        },
+                                    }}
+                                    startIcon={<Icon icon='mdi:whatsapp' width={20} height={20} />}
+                                >
+                                    Hubungi Kami
+                                </Button>
+                            </Paper>
+
+                            {/* Quick Links */}
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    p: 3,
+                                    borderRadius: 3,
+                                    border: '1px solid #e2e8f0',
+                                }}
+                            >
+                                <Typography variant='h6' sx={{ fontWeight: 'bold', mb: 2, color: '#1e293b' }}>
+                                    Link Berguna
+                                </Typography>
+                                <Stack spacing={2}>
+                                    {[
+                                        { label: 'Syarat & Ketentuan', icon: 'mdi:file-document' },
+                                        { label: 'Kebijakan Privasi', icon: 'mdi:shield-lock' },
+                                        { label: 'Cara Pemesanan', icon: 'mdi:help-circle' },
+                                        { label: 'Panduan Perjalanan', icon: 'mdi:map' },
+                                    ].map((item, index) => (
+                                        <Button
+                                            key={index}
+                                            variant='text'
+                                            fullWidth
+                                            startIcon={<Icon icon={item.icon} width={18} height={18} />}
+                                            sx={{
+                                                justifyContent: 'flex-start',
+                                                color: '#64748b',
+                                                textTransform: 'none',
+                                                borderRadius: 2,
+                                                '&:hover': {
+                                                    backgroundColor: '#f8fafc',
+                                                    color: '#0ea5e9',
+                                                },
+                                            }}
+                                        >
+                                            {item.label}
+                                        </Button>
+                                    ))}
+                                </Stack>
+                            </Paper>
+
+                            {/* Statistics */}
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    p: 3,
+                                    borderRadius: 3,
+                                    border: '1px solid #e2e8f0',
+                                    backgroundColor: '#f8fafc',
+                                }}
+                            >
+                                <Typography variant='h6' sx={{ fontWeight: 'bold', mb: 2, color: '#1e293b' }}>
+                                    Statistik Bantuan
+                                </Typography>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <Box sx={{ textAlign: 'center' }}>
+                                            <Typography variant='h4' sx={{ fontWeight: 'bold', color: '#0ea5e9' }}>
+                                                98%
+                                            </Typography>
+                                            <Typography variant='caption' sx={{ color: '#64748b' }}>
+                                                Masalah Terselesaikan
+                                            </Typography>
+                                        </Box>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Box sx={{ textAlign: 'center' }}>
+                                            <Typography variant='h4' sx={{ fontWeight: 'bold', color: '#10b981' }}>
+                                                &lt;5m
+                                            </Typography>
+                                            <Typography variant='caption' sx={{ color: '#64748b' }}>
+                                                Waktu Respon
+                                            </Typography>
+                                        </Box>
+                                    </Grid>
+                                </Grid>
+                            </Paper>
+                        </Stack>
                     </Grid>
                 </Grid>
             </Container>
@@ -445,4 +507,4 @@ const FaqSection: React.FC = () => {
     )
 }
 
-export default FaqSection
+export default FAQSection

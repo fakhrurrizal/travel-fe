@@ -7,11 +7,13 @@ export const useGetTheme = () => {
 
     const error = '#ff3a6e'
 
+    const backgroundColor = '#FFFFFF'
+
     const borderRadius = 4
 
     const fontColor = '#474955'
 
-    const fontDark = '#474955'
+    const fontDark = primary
 
     const useTheme = useMemo(
         () =>
@@ -21,6 +23,8 @@ export const useGetTheme = () => {
                 },
 
                 palette: {
+                    mode: 'light',
+
                     primary: {
                         main: primary,
                     },
@@ -45,6 +49,11 @@ export const useGetTheme = () => {
                         main: colors.blue[300],
                     },
 
+                    background: {
+                        default: backgroundColor,
+                        paper: backgroundColor,
+                    },
+
                     mainColor: colors.slate[100],
 
                     fontColor,
@@ -56,98 +65,62 @@ export const useGetTheme = () => {
                 },
 
                 typography: {
-                    fontFamily: ['"Montserrat"', 'sans-serif'].join(','),
-                    fontSize: 13.125,
-                    h1: {
-                        fontWeight: 500,
-                        fontSize: '2.375rem',
-                        lineHeight: 1.368421,
-                    },
-                    h2: {
-                        fontWeight: 500,
-                        fontSize: '2rem',
-                        lineHeight: 1.375,
-                    },
-                    h3: {
-                        fontWeight: 500,
-                        lineHeight: 1.38462,
-                        fontSize: '1.625rem',
-                    },
-                    h4: {
-                        fontWeight: 500,
-                        lineHeight: 1.364,
-                        fontSize: '1.375rem',
-                    },
-                    h5: {
-                        fontWeight: 500,
-                        lineHeight: 1.3334,
-                        fontSize: '1.125rem',
-                    },
-                    h6: {
-                        lineHeight: 1.4,
-                        fontSize: '0.9375rem',
-                    },
-                    subtitle1: {
-                        fontSize: '1rem',
-                        letterSpacing: '0.15px',
-                    },
-                    subtitle2: {
-                        lineHeight: 1.32,
-                        fontSize: '0.875rem',
-                        letterSpacing: '0.1px',
-                    },
-                    body1: {
-                        lineHeight: 1.467,
-                        fontSize: '0.9375rem',
-                    },
-                    body2: {
-                        fontSize: '0.8125rem',
-                        lineHeight: 1.53846154,
-                    },
-                    button: {
-                        lineHeight: 1.2,
-                        fontSize: '0.9375rem',
-                        letterSpacing: '0.43px',
-                    },
-                    caption: {
-                        lineHeight: 1.273,
-                        fontSize: '0.6875rem',
-                    },
-                    overline: {
-                        fontSize: '0.75rem',
-                        letterSpacing: '1px',
+                    fontSize: 13,
+
+                    fontWeightRegular: 500,
+
+                    allVariants: {
+                        fontFamily: '"Montserrat", sans-serif',
+                        // fontFamily: '"Source Sans 3", sans-serif',
+                        color: fontColor,
                     },
                 },
 
-                shadows: [
-                    'none',
-                    '0px 2px 4px 0px rgba(47, 43, 61, 0.12)',
-                    '0px 2px 6px 0px rgba(47, 43, 61, 0.14)',
-                    '0px 3px 8px 0px rgba(47, 43, 61, 0.14)',
-                    '0px 3px 9px 0px rgba(47, 43, 61, 0.15)',
-                    '0px 4px 10px 0px rgba(47, 43, 61, 0.15)',
-                    '0px 4px 11px 0px rgba(47, 43, 61, 0.16)',
-                    '0px 4px 18px 0px rgba(47, 43, 61, 0.1)',
-                    '0px 4px 13px 0px rgba(47, 43, 61, 0.18)',
-                    '0px 5px 14px 0px rgba(47, 43, 61, 0.18)',
-                    '0px 5px 15px 0px rgba(47, 43, 61, 0.2)',
-                    '0px 5px 16px 0px rgba(47, 43, 61, 0.2)',
-                    '0px 6px 17px 0px rgba(47, 43, 61, 0.22)',
-                    '0px 6px 18px 0px rgba(47, 43, 61, 0.22)',
-                    '0px 6px 19px 0px rgba(47, 43, 61, 0.24)',
-                    '0px 7px 20px 0px rgba(47, 43, 61, 0.24)',
-                    '0px 7px 21px 0px rgba(47, 43, 61, 0.26)',
-                    '0px 7px 22px 0px rgba(47, 43, 61, 0.26)',
-                    '0px 8px 23px 0px rgba(47, 43, 61, 0.28)',
-                    '0px 8px 24px 6px rgba(47, 43, 61, 0.28)',
-                    '0px 9px 25px 0px rgba(47, 43, 61, 0.3)',
-                    '0px 9px 26px 0px rgba(47, 43, 61, 0.32)',
-                    '0px 9px 27px 0px rgba(47, 43, 61, 0.32)',
-                    '0px 10px 28px 0px rgba(47, 43, 61, 0.34)',
-                    '0px 10px 30px 0px rgba(47, 43, 61, 0.34)',
-                ],
-
                 components: {
+                    MuiContainer: {
+                        styleOverrides: {
+                            root: {
+                                paddingLeft: '16px',
+                                paddingRight: '16px',
+                            },
+                        },
+                        defaultProps: {
+                            maxWidth: 'lg',
+                        },
+                        variants: [
+                            {
+                                props: { maxWidth: 'xs' },
+                                style: {
+                                    maxWidth: '444px',
+                                },
+                            },
+                            {
+                                props: { maxWidth: 'sm' },
+                                style: {
+                                    maxWidth: '672px',
+                                },
+                            },
+                            {
+                                props: { maxWidth: 'md' },
+                                style: {
+                                    maxWidth: '900px',
+                                },
+                            },
+                            {
+                                props: { maxWidth: 'lg' },
+                                style: {
+                                    maxWidth: '1200px',
+                                },
+                            },
+                            {
+                                props: { maxWidth: 'xl' },
+                                style: {
+                                    maxWidth: '1536px',
+                                },
+                            },
+                        ],
+                    },
+
                     MuiTextField: {
                         styleOverrides: {
                             root: {
@@ -181,8 +154,47 @@ export const useGetTheme = () => {
                             root: {
                                 boxShadow: 'none',
                                 textTransform: 'none',
-                                ':hover': {
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                padding: '6px 16px',
+                                '&:hover': {
                                     boxShadow: 'none',
+                                },
+                            },
+                            contained: {
+                                backgroundColor: '#FF914D',
+                                color: '#fff',
+                                '&:hover': {
+                                    backgroundColor: '#ff7c29',
+                                },
+                            },
+                            outlined: {
+                                backgroundColor: 'transparent',
+                                color: '#FF914D',
+                                borderColor: '#FF914D',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 145, 77, 0.08)',
+                                    borderColor: '#FF914D',
+                                },
+                            },
+                            text: {
+                                color: '#FF914D',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 145, 77, 0.08)',
+                                },
+                            },
+                        },
+                    },
+                    MuiIconButton: {
+                        styleOverrides: {
+                            root: {
+                                color: '#FF914D',
+                                borderRadius: '6px',
+                                padding: '8px',
+                                transition: 'background-color 0.2s ease',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 145, 77, 0.08)',
+                                    borderColor: '#FF914D',
                                 },
                             },
                         },
@@ -192,7 +204,7 @@ export const useGetTheme = () => {
                         styleOverrides: {
                             root: {
                                 minWidth: '38px',
-                                color: primary,
+                                color: 'rgba(0, 0, 0, 0.54)',
                             },
                         },
                     },
@@ -215,7 +227,7 @@ export const useGetTheme = () => {
                                 },
 
                                 '&.Mui-selected': {
-                                    backgroundColor: alpha(primary, 0.2),
+                                    backgroundColor: alpha(primary, 0.1),
 
                                     '& .MuiButtonBase-root': {
                                         color: primary,
@@ -268,8 +280,18 @@ export const useGetTheme = () => {
                     MuiTooltip: {
                         defaultProps: {
                             placement: 'bottom',
-                            sx: {
+                        },
+                        styleOverrides: {
+                            tooltip: {
                                 fontSize: '13px',
+                                padding: '8px 12px',
+                                backgroundColor: 'rgba(97, 97, 97, 0.92)',
+                                borderRadius: '4px',
+                                fontWeight: 400,
+                                lineHeight: 1.5,
+                            },
+                            arrow: {
+                                color: 'rgba(97, 97, 97, 0.92)',
                             },
                         },
                     },
@@ -304,7 +326,7 @@ export const useGetTheme = () => {
                 },
             }),
 
-        [fontColor, fontDark, primary]
+        [backgroundColor, fontColor, fontDark, primary]
     )
 
     return useTheme

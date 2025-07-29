@@ -33,7 +33,9 @@ const getInitialState: () => ApplicationSettings = () => {
     let storedData
 
     try {
-        storedData = localStorage.getItem(localKey.application_settings)
+        if (typeof window !== 'undefined') {
+            storedData = localStorage.getItem(localKey.application_settings)
+        }
     } catch (error) {
         storedData = null
         console.log(error)

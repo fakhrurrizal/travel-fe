@@ -1,4 +1,4 @@
-import { CustomTextField } from '@/components'
+import CustomTextField from '@/components/text-field/custom-text-field'
 import { useUserProfile } from '@/utils/mutations/use-register'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Icon } from '@iconify/react'
@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 const signUpSchema = z
@@ -18,8 +19,17 @@ const signUpSchema = z
         phone: z
             .string()
             .min(1, 'Nomor telepon wajib diisi')
-            .regex(/^0\d{9,12}$/, 'Masukkan nomor telepon Indonesia yang valid (diawali 0, 10–13 digit)'),
+            .regex(/^[8][\d-]+$/, 'Masukkan nomor diawali angka 8 dan hanya berisi angka atau tanda hubung')
+            .refine(
+                val => {
+                    const cleaned = val.replace(/[^0-9]/g, '')
 
+                    return cleaned.length >= 9 && cleaned.length <= 12
+                },
+                {
+                    message: 'Nomor telepon harus terdiri dari 9–12 digit angka (tidak termasuk angka 0 di depan)',
+                }
+            ),
         password: z
             .string()
             .min(8, 'Kata sandi minimal terdiri dari 8 karakter')
@@ -60,6 +70,7 @@ const SignUpComponent: React.FC = () => {
     const onSubmit = async (data: SignUpFormData) => {
         try {
             await register({ ...data, role_id: 3 })
+            toast.success('Cek email anda untuk verifikasi akun')
             router.push('/auth/login')
         } catch (error) {
             console.error('Submission error:', error)
@@ -82,7 +93,6 @@ const SignUpComponent: React.FC = () => {
                 className='w-full lg:w-1/2 flex items-center justify-center p-8 relative'
                 style={{ backgroundColor: '#B6E8FF' }}
             >
-                {/* Decorative Image - Top Right */}
                 <div className='absolute top-0 right-0'>
                     <Image
                         src='/decorative-lines-top.png'
@@ -129,7 +139,6 @@ const SignUpComponent: React.FC = () => {
                             Daftar
                         </Typography>
 
-                        {/* Form */}
                         <form onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
@@ -205,7 +214,7 @@ const SignUpComponent: React.FC = () => {
                                         fontWeight: '600',
                                         textTransform: 'none',
                                         boxShadow: 'none',
-                                        color: '#0159A3',
+                                        color: 'white',
                                     }}
                                 >
                                     {isLoadingRegister ? (

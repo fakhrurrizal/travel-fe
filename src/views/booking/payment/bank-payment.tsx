@@ -1,25 +1,24 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import {
-    Box,
-    Container,
-    Typography,
-    Grid,
-    Paper,
-    Button,
-    Divider,
-    Select,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-} from '@mui/material'
 import { Icon } from '@iconify/react'
-import Navbar from '../../homepage/navbar'
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Box,
+    Button,
+    Container,
+    Divider,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Paper,
+    Select,
+    Typography,
+} from '@mui/material'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 const PaymentDetailVA = () => {
     const router = useRouter()
@@ -133,8 +132,6 @@ const PaymentDetailVA = () => {
 
     return (
         <Box sx={{ backgroundColor: '#f8fafc', minHeight: '100vh' }}>
-            <Navbar showAuthButtons={false} isLoggedIn={true} />
-
             <Container maxWidth='lg' sx={{ pt: 15, pb: 4 }}>
                 <Grid container spacing={4}>
                     {/* Payment Instructions */}
