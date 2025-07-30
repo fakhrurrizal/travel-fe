@@ -1,14 +1,13 @@
 import { getNavbarLayout } from '@/components'
 import { NextPageWithLayout } from '@/utils'
-import ScheduleListPageViews from '@/views/manage-tour/schedule'
-// import ContactList from '@/views/master-data/contact-data'
+import TransportationScheduleListPageViews from '@/views/transportation/schedule'
 
-const ScheduleList: NextPageWithLayout = () => {
+const TransportationScheduleList: NextPageWithLayout = () => {
     return (
         <>
-            <ScheduleListPageViews />
+            <TransportationScheduleListPageViews />
         </>
     )
 }
-ScheduleList.getLayout = getNavbarLayout
-export default ScheduleList
+TransportationScheduleList.getLayout = getNavbarLayout
+export default TransportationScheduleList

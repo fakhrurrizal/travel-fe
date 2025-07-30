@@ -19,6 +19,7 @@ export const endpoints = {
     transportation_class: 'transportation-class',
     transportation_terminal: 'transportation-terminal',
     transportation_route: 'transportation-route',
+    transportation_schedule: 'transportation-schedule',
 
     // files
     category: 'category',

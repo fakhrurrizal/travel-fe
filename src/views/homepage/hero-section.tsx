@@ -2,7 +2,7 @@
 
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Box,
     Container,
@@ -22,23 +22,44 @@ import {
     Divider,
 } from '@mui/material'
 import { Icon } from '@iconify/react'
+import { useTransportationTypeParams } from '@/utils/quries/use-transportation-type.query'
+import { ServerSideAutoComplete } from '@/components'
+import { HomePageForm, homePageSchema } from './schema/form.schemas'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 const HeroSection: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState(0)
     const [tripType, setTripType] = useState('Sekali Jalan')
     const [passengers, setPassengers] = useState('1 Dewasa')
-    const [flightClass, setFlightClass] = useState('Ekonomi')
+    const [selectedTabData, setSelectedTabData] = useState<any>(null)
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setSelectedTab(newValue)
+        const selectedData = transportTabs[newValue]
+        setSelectedTabData(selectedData)
     }
 
-    const transportTabs = [
-        { label: 'Pesawat', icon: 'mdi:airplane' },
-        { label: 'Kereta', icon: 'mdi:train' },
-        { label: 'Bus', icon: 'mdi:bus' },
-        { label: 'Kapal', icon: 'mdi:ferry' },
-    ]
+    const { data: { data: transportTabs = [] } = { data: [] } } = useTransportationTypeParams({
+        pageSize: 20,
+        pageIndex: 1,
+        sort: 'asc',
+    })
+
+    useEffect(() => {
+        if (transportTabs.length > 0) {
+            setSelectedTabData(transportTabs[selectedTab])
+        }
+    }, [selectedTab, transportTabs])
+
+    const homeForm = useForm<HomePageForm>({
+        defaultValues: {
+            transportation_class_id: null,
+        },
+        resolver: zodResolver(homePageSchema),
+    })
+
+    const { control } = homeForm
 
     return (
         <Box sx={{ pt: 10 }}>
@@ -198,7 +219,6 @@ const HeroSection: React.FC = () => {
                             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
                         }}
                     >
-                        {/* Transport Tabs */}
                         <Tabs
                             value={selectedTab}
                             onChange={handleTabChange}
@@ -223,11 +243,11 @@ const HeroSection: React.FC = () => {
                                 },
                             }}
                         >
-                            {transportTabs.map((tab, index) => (
+                            {transportTabs?.map((tab: any, index: number) => (
                                 <Tab
                                     key={index}
                                     icon={<Icon icon={tab.icon} width={24} height={24} />}
-                                    label={tab.label}
+                                    label={tab.name}
                                     iconPosition='top'
                                     sx={{
                                         flexDirection: 'column',
@@ -330,7 +350,27 @@ const HeroSection: React.FC = () => {
 
                                 {/* Flight Class */}
                                 <Grid item xs={12} md={3}>
-                                    <FormControl fullWidth>
+                                    <ServerSideAutoComplete<HomePageForm, { id: number; label: string }, any>
+                                        control={control}
+                                        endpoint='transportation_class'
+                                        name='transportation_class_id'
+                                        queryEndpoint={{
+                                            transportation_type_id: selectedTabData?.id,
+                                        }}
+                                        label='Kelas Transportasi'
+                                        size='small'
+                                        formatOptions={response => {
+                                            const options = response.data
+
+                                            if (!options) return []
+
+                                            return options.map((option: any) => ({
+                                                id: option.id,
+                                                label: option.name,
+                                            }))
+                                        }}
+                                    />
+                                    {/* <FormControl fullWidth>
                                         <InputLabel sx={{ color: '#64748b' }}>Kelas</InputLabel>
                                         <Select
                                             value={flightClass}
@@ -356,7 +396,7 @@ const HeroSection: React.FC = () => {
                                             <MenuItem value='Bisnis'>Business</MenuItem>
                                             <MenuItem value='First Class'>First Class</MenuItem>
                                         </Select>
-                                    </FormControl>
+                                    </FormControl> */}
                                 </Grid>
 
                                 {/* Divider */}

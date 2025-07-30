@@ -23,7 +23,6 @@ import {
     Rating,
 } from '@mui/material'
 import { Icon } from '@iconify/react'
-import Navbar from '../homepage/navbar'
 
 // Mock data untuk destinasi
 const TourPackagesPage = () => {
@@ -428,7 +427,6 @@ const TourPackagesPage = () => {
                     const endDate = endStr ? new Date(endStr.trim()) : startDate
                     const selected = new Date(selectedDate)
 
-                    // Bandingkan apakah selectedDate berada di dalam rentang startDate s.d. endDate
                     matchesDate = selected >= startDate && selected <= endDate
                 }
 
@@ -438,10 +436,7 @@ const TourPackagesPage = () => {
 
         return (
             <Box sx={{ backgroundColor: '#f8fafc', minHeight: '100vh' }}>
-                {/* Header */}
-                <Navbar showAuthButtons={false} isLoggedIn={true} />
                 <Container maxWidth='xl'>
-                    {/* Search and Filters */}
                     <Box sx={{ mb: 4 }}>
                         <Typography variant='h6' sx={{ mb: 2, mt: 5, pt: 10, color: '#1e293b' }}>
                             Urutkan

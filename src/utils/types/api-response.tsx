@@ -13,3 +13,17 @@ export interface RegisterPayload {
     password: string
     role_id: number
 }
+
+export interface ResponseUploadFileMultiple {
+    data: {
+        id: string
+        created_at: string
+        updated_at: string
+        token: string
+        user_id: number
+        filename: string
+        full_url: string
+    }[]
+    message: string
+    status: number
+}

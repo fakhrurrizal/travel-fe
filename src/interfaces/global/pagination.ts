@@ -7,6 +7,8 @@ export interface PaginationArgs<T = any> {
     status?: any
     transportationType?: string
     transportationCompany?: string
+    transportationClass?: string
+    transportationRoute?: string
     arrivalTerminal?: string
     departureTerminal?: string
 }

@@ -2155,6 +2155,11 @@ get-tsconfig@^4.7.5:
   dependencies:
     resolve-pkg-maps "^1.0.0"
 
+glider-js@^1.7.7:
+  version "1.7.9"
+  resolved "https://registry.npmjs.org/glider-js/-/glider-js-1.7.9.tgz#a5b6adcc6ba4919c734207a81ed9deb4db2209eb"
+  integrity sha512-22r7EZ8cd4HWsM+pvNResu1h9tvJmAlrMBO2CbdJ9mhsYF/UllJEdvq8OuJDBgYcD0aja51vzRb/TbT7BCAaig==
+
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.npmjs.org/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
@@ -3203,6 +3208,13 @@ react-dom@19.0.0-rc-02c0e824-20241028:
   integrity sha512-LrZf3DfHL6Fs07wwlUCHrzFTCMM19yA99MvJpfLokN4I2nBAZvREGZjZAn8VPiSfN72+i9j1eL4wB8gC695F3Q==
   dependencies:
     scheduler "0.25.0-rc-02c0e824-20241028"
+
+react-glider@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/react-glider/-/react-glider-5.0.0.tgz#f78e003f5a69e1bea4cf4d81a30804a8e902a833"
+  integrity sha512-G8XuNInBEG7MRr8kjDN+0fyxRkgyrQiEtok1r4ooaQNqXSvhihu14YdUn/AULbIRl3vCxeZsfSAM46wyyEfz3g==
+  dependencies:
+    glider-js "^1.7.7"
 
 react-hook-form@^7.53.1:
   version "7.53.2"

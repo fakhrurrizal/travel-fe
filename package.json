@@ -33,6 +33,7 @@
         "react": "19.0.0-rc-02c0e824-20241028",
         "react-datepicker": "^7.5.0",
         "react-dom": "19.0.0-rc-02c0e824-20241028",
+        "react-glider": "^5.0.0",
         "react-hook-form": "^7.53.1",
         "react-imask": "^6.5.0-alpha.0",
         "react-toastify": "^10.0.6",

@@ -7,7 +7,7 @@ import CustomStyledTableRow from '@/components/custom-table/table/custom-styled-
 import TableHeaderCustomTable from '@/components/custom-table/table/header'
 import ToolbarSectionTableCustom from '@/components/custom-table/toolbar'
 import { Order } from '@/interfaces'
-import { useTransportationTerminalParams } from '@/utils/quries/use-transportation-terminal.query'
+import { useTransportationScheduleParams } from '@/utils/quries/use-transportation-schedule.query'
 import { SelectChangeEvent } from '@mui/material'
 import { useRouter } from 'next/router'
 import { Fragment, useCallback, useEffect, useState } from 'react'
@@ -16,31 +16,37 @@ import AddTrip from './modal/add'
 import FilterTransportationCompany from './modal/filter'
 import { TransportationCompanyFilter } from './schema/filter.schema'
 import RowOptions from './table/row-options'
+import { formatToIDR } from '@/utils/helpers/format-number.helper'
+import dayjs from 'dayjs'
 
 const HeaderItems = [
     {
-        label: 'nama terminal',
+        label: 'Jenis transportasi',
         alignCenter: false,
     },
     {
-        label: 'kode',
+        label: 'nama kendaraan',
         alignCenter: true,
     },
     {
-        label: 'Kota',
+        label: 'kelas',
         alignCenter: false,
     },
     {
-        label: 'Provinsi',
+        label: 'rute',
         alignCenter: false,
     },
     {
-        label: 'Alamat',
+        label: 'total kursi',
         alignCenter: false,
     },
     {
-        label: 'Jenis Transportasi',
+        label: 'harga',
         alignCenter: true,
+    },
+    {
+        label: 'Berlaku',
+        alignCenter: false,
     },
     {
         label: 'Action',
@@ -48,7 +54,7 @@ const HeaderItems = [
     },
 ]
 
-const TransportationTerminalListPageViews = () => {
+const TransportationScheduleListPageViews = () => {
     const [pageSize, setPageSize] = useState<number>(10)
 
     const [page, setPage] = useState<number>(1)
@@ -63,21 +69,23 @@ const TransportationTerminalListPageViews = () => {
 
     const router = useRouter()
 
-    const { sort, transportation_type_id } = router.query
+    const { sort, transportation_class_id, transportation_route_id } = router.query
 
     const form = useForm<TransportationCompanyFilter>({
         defaultValues: {
-            transportation_type: null,
+            transportation_class: null,
+            transportation_route: null,
             sort: null,
         },
     })
 
     const { data: { data: ListData = [], recordsFiltered = 0 } = { data: [] }, isLoading } =
-        useTransportationTerminalParams({
+        useTransportationScheduleParams({
             pageSize: pageSize,
             searchValue: debouncedSearchValue,
             pageIndex: page,
-            transportationType: transportation_type_id as string,
+            transportationClass: transportation_class_id as string,
+            transportationCompany: transportation_route_id as string,
             sort: sort ? (sort as Order) : undefined,
         })
 
@@ -111,7 +119,7 @@ const TransportationTerminalListPageViews = () => {
     return (
         <>
             <div className='custom__styled__container'>
-                <HeaderSectionTableCustom title={'Daftar Terminal'} />
+                <HeaderSectionTableCustom title={'Daftar Jadwal'} />
                 <ToolbarSectionTableCustom
                     searchValue={searchValue}
                     handleSearch={handleSearch}
@@ -131,15 +139,25 @@ const TransportationTerminalListPageViews = () => {
                                     return (
                                         <Fragment key={item?.id}>
                                             <CustomStyledTableRow>
-                                                <CustomStyledTableHead>{item?.name}</CustomStyledTableHead>
-                                                <CustomStyledTableData className='text-center'>
-                                                    {item?.code}
+                                                <CustomStyledTableHead>
+                                                    {item?.transportation_class?.transportation_type}
+                                                </CustomStyledTableHead>
+                                                <CustomStyledTableData>{item?.vehicle_name}</CustomStyledTableData>
+                                                <CustomStyledTableData>
+                                                    {item?.transportation_class?.name}
                                                 </CustomStyledTableData>
-                                                <CustomStyledTableData>{item?.city}</CustomStyledTableData>
-                                                <CustomStyledTableData>{item?.province}</CustomStyledTableData>
-                                                <CustomStyledTableData>{item?.address}</CustomStyledTableData>
+                                                <CustomStyledTableData>
+                                                    {item?.transportation_route?.name}
+                                                </CustomStyledTableData>
                                                 <CustomStyledTableData className='text-center'>
-                                                    {item?.transportation_type?.name}
+                                                    {Number(item?.total_seat)}
+                                                </CustomStyledTableData>
+                                                <CustomStyledTableData className='text-center'>
+                                                    {formatToIDR(item?.base_price)}
+                                                </CustomStyledTableData>
+                                                <CustomStyledTableData>
+                                                    {dayjs(item?.valid_from).format('DD-MM-YYYY')} -{' '}
+                                                    {dayjs(item?.valid_until).format('DD-MM-YYYY')}
                                                 </CustomStyledTableData>
                                                 <CustomStyledTableData className='text-center'>
                                                     <RowOptions data={item} />
@@ -169,4 +187,4 @@ const TransportationTerminalListPageViews = () => {
     )
 }
 
-export default TransportationTerminalListPageViews
+export default TransportationScheduleListPageViews

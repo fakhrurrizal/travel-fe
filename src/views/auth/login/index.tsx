@@ -189,6 +189,23 @@ const LoginComponent: React.FC = () => {
                                 </Typography>
                             </Typography>
                         </Box>
+                        <Box className='text-center mt-5'>
+                            <Typography
+                                component='span'
+                                onClick={() => router.push('/')}
+                                sx={{
+                                    color: '#1976D2',
+                                    textDecoration: 'none',
+                                    fontWeight: '500',
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                        textDecoration: 'underline',
+                                    },
+                                }}
+                            >
+                                Kembali
+                            </Typography>
+                        </Box>
                     </CardContent>
                 </Card>
             </div>

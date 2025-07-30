@@ -28,8 +28,9 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
     const [mounted, setMounted] = useState(false)
     const router = useRouter()
 
-    const isLogin = useAuth(state => state.value?.user)
     const user = useAuth(state => state.value?.user)
+
+    const logout = useAuth(state => state.logout)
 
     useEffect(() => {
         setMounted(true)
@@ -49,6 +50,7 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
 
     const handleLogout = () => {
         handleAvatarClose()
+        logout()
         router.push('/')
     }
 
@@ -59,7 +61,7 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
 
     const navItems = [
         { label: 'Home', path: '/' },
-        { label: 'Booking', path: '/' },
+        { label: 'Booking', path: '/booking' },
     ]
 
     const isHome = router.pathname === '/'
@@ -236,7 +238,7 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
                 ))}
             </List>
 
-            {isLogin ? (
+            {Number(user?.id) > 0 ? (
                 <Box sx={{ px: 2, mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Avatar
                         src={user?.avatar || '/images/avatar.png'}
@@ -337,7 +339,6 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
                             <Image src='/Logo.png' alt='Logo' width={70} height={70} />
                         </Box>
 
-                        {/* Desktop Navigation */}
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
                             {navItems.map(item => (
                                 <Button
@@ -361,7 +362,7 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
                         </Box>
 
                         <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>
-                            {isLogin ? (
+                            {Number(user?.id) > 0 ? (
                                 <IconButton onClick={handleAvatarClick} sx={{ p: 0 }}>
                                     <Avatar
                                         src={user?.avatar || '/images/avatar.png'}
