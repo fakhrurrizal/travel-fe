@@ -56,7 +56,7 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
 
     const handleProfile = () => {
         handleAvatarClose()
-        router.push('/profile')
+        router.push('/dashboard')
     }
 
     const navItems = [
@@ -266,7 +266,7 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
                             },
                         }}
                     >
-                        Profile
+                        Dashboard
                     </Button>
                     <Button
                         variant='contained'
@@ -454,8 +454,8 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem onClick={handleProfile} sx={{ py: 1.5 }}>
-                    <Icon icon='mdi:account-outline' width={20} height={20} style={{ marginRight: 8 }} />
-                    Profile
+                    <Icon icon='mdi:view-dashboard-outline' width={20} height={20} style={{ marginRight: 8 }} />
+                    Dashboard
                 </MenuItem>
                 <MenuItem onClick={handleLogout} sx={{ py: 1.5, color: '#dc2626' }}>
                     <Icon icon='mdi:logout' width={20} height={20} style={{ marginRight: 8 }} />

@@ -52,7 +52,7 @@ const FormDataModal = ({ form }: Props) => {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: `${accessToken}`,
-                        'X-API-KEY': encodedKey
+                        'X-API-KEY': encodedKey,
                     },
                 })
                 setValue('image', response.data.data.full_url)
@@ -201,18 +201,15 @@ const FormDataModal = ({ form }: Props) => {
 
                 <Grid item xs={12} sm={6}>
                     <DatePicker
-                        label="Berlaku dari"
+                        label='Berlaku dari'
                         value={watch('valid_from') ? dayjs(watch('valid_from')) : null}
-                        format="DD MMMM YYYY"
+                        format='DD MMMM YYYY'
                         onChange={newValue => {
                             if (newValue && dayjs(newValue).isValid()) {
                                 const formatted = dayjs(newValue).format('YYYY-MM-DD')
                                 setValue('valid_from', formatted)
 
-                                if (
-                                    watch('valid_until') &&
-                                    dayjs(watch('valid_until')).isBefore(dayjs(formatted))
-                                ) {
+                                if (watch('valid_until') && dayjs(watch('valid_until')).isBefore(dayjs(formatted))) {
                                     setValue('valid_until', '')
                                 }
                             } else {
@@ -231,13 +228,12 @@ const FormDataModal = ({ form }: Props) => {
                             },
                         }}
                     />
-
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <DatePicker
-                        label="Berlaku hingga"
+                        label='Berlaku hingga'
                         value={watch('valid_until') ? dayjs(watch('valid_until')) : null}
-                        format="DD MMMM YYYY"
+                        format='DD MMMM YYYY'
                         onChange={newValue => {
                             if (newValue && dayjs(newValue).isValid()) {
                                 setValue('valid_until', dayjs(newValue).format('YYYY-MM-DD'))
@@ -245,11 +241,7 @@ const FormDataModal = ({ form }: Props) => {
                                 setValue('valid_until', '')
                             }
                         }}
-                        minDate={
-                            watch('valid_from')
-                                ? dayjs(watch('valid_from')).add(1, 'day')
-                                : dayjs().add(2, 'day')
-                        }
+                        minDate={watch('valid_from') ? dayjs(watch('valid_from')).add(1, 'day') : dayjs().add(2, 'day')}
                         slotProps={{
                             textField: {
                                 fullWidth: true,
@@ -261,11 +253,10 @@ const FormDataModal = ({ form }: Props) => {
                             },
                         }}
                     />
-
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TimePicker
-                        label="Jam Keberangkatan"
+                        label='Jam Keberangkatan'
                         value={watch('departure_at') ? dayjs(watch('departure_at')) : null}
                         onChange={newValue => {
                             if (newValue && dayjs(newValue).isValid()) {
@@ -286,12 +277,11 @@ const FormDataModal = ({ form }: Props) => {
                             },
                         }}
                     />
-
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
                     <TimePicker
-                        label="Jam Kedatangan"
+                        label='Jam Kedatangan'
                         value={watch('arrival_at') ? dayjs(watch('arrival_at')) : null}
                         onChange={newValue => {
                             if (newValue && dayjs(newValue).isValid()) {
@@ -312,7 +302,6 @@ const FormDataModal = ({ form }: Props) => {
                             },
                         }}
                     />
-
                 </Grid>
             </Grid>
         </>

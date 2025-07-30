@@ -191,8 +191,9 @@ const FormDataTrip = ({ form }: Props) => {
                                                     sx={({ palette }) => ({
                                                         width: '100%',
                                                         height: '100%',
-                                                        border: `1px dashed  ${errors?.image ? palette.primary.main : palette.primary.main
-                                                            }`,
+                                                        border: `1px dashed  ${
+                                                            errors?.image ? palette.primary.main : palette.primary.main
+                                                        }`,
                                                         display: 'flex',
                                                         gap: 3,
                                                         alignItems: 'center',
@@ -246,8 +247,9 @@ const FormDataTrip = ({ form }: Props) => {
                                             height: '10rem',
                                             width: '100%',
                                             fontSize: '12px',
-                                            border: `1px dashed  ${errors?.image ? palette.primary.main : palette.primary.main
-                                                }`,
+                                            border: `1px dashed  ${
+                                                errors?.image ? palette.primary.main : palette.primary.main
+                                            }`,
                                             display: 'flex',
                                             gap: 3,
                                             alignItems: 'center',
