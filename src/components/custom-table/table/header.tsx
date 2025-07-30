@@ -1,9 +1,7 @@
-import { Fragment, useEffect, useState } from 'react'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward' // Ascending icon
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward' // Descending icon
-import { useRouter } from 'next/router'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'; // Descending icon
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'; // Ascending icon
 import { Checkbox } from '@mui/material'
-import queryString from 'query-string'
+import { Fragment, useState } from 'react'
 
 export type headerTypes = {
     label: string
@@ -35,7 +33,6 @@ const TableHeaderCustomTable = ({
     containerClass,
 }: Props) => {
     const [sortConfig, setSortConfig] = useState<{ field: string; direction: 'asc' | 'desc' | null } | null>(null)
-    const route = useRouter()
 
     const handleSort = (field: string) => {
         let direction: 'asc' | 'desc' | null = 'asc'
@@ -43,9 +40,9 @@ const TableHeaderCustomTable = ({
             if (sortConfig.direction === 'asc') {
                 direction = 'desc'
             } else if (sortConfig.direction === 'desc') {
-                direction = null // Set to "off" (remove sorting) after desc
+                direction = null
             } else {
-                direction = 'asc' // Reset back to "asc" after "off"
+                direction = 'asc'
             }
         }
         setSortConfig(direction ? { field, direction } : null)
@@ -53,33 +50,6 @@ const TableHeaderCustomTable = ({
             onSort(field, direction)
         }
     }
-    useEffect(() => {
-        const currentQuery = queryString.parse(window.location.search)
-
-        if (!sortConfig) {
-            const { ...rest } = currentQuery
-
-            const newQuery = queryString.stringify(rest)
-
-            route.push(`${route.pathname}${newQuery ? `?${newQuery}` : ''}`, undefined, {
-                shallow: false,
-            })
-
-            return
-        }
-
-        const newQuery = {
-            ...currentQuery,
-            sort: sortConfig.direction,
-            order: sortConfig.field,
-        }
-
-        const queryStr = queryString.stringify(newQuery)
-
-        route.push(`${route.pathname}?${queryStr}`, undefined, {
-            shallow: false,
-        })
-    }, [sortConfig, route])
 
     return (
         <thead
@@ -99,9 +69,8 @@ const TableHeaderCustomTable = ({
                                 onClick={() => item.sortable && item.field && handleSort(item.field)}
                             >
                                 <div
-                                    className={`${
-                                        item.sortable && 'cursor-pointer py-1 hover:px-2 hover:bg-slate-300 rounded-md'
-                                    }`}
+                                    className={`${item.sortable && 'cursor-pointer py-1 hover:px-2 hover:bg-slate-300 rounded-md'
+                                        }`}
                                 >
                                     {item?.label?.toUpperCase()}
                                     {item.sortable && sortConfig?.field === item.field && sortConfig?.direction && (
