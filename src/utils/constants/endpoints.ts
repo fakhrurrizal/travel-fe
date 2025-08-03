@@ -7,6 +7,10 @@ export const endpoints = {
     trip: 'trip',
     file: 'file',
     email_verification: 'auth/email-verification',
+
+    // user
+    user: 'user',
+
     // blog
     destination: 'destination',
     destination_type: 'destination-type',
