@@ -21,8 +21,12 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 const PaymentDetailVA = () => {
+
+
+    // const searchParams = useSearchParams();
+    // const payment_code = searchParams.get('payment_code');
     const router = useRouter()
-    const { id } = router.query
+    const { id, payment_code } = router.query
     const [timeLeft, setTimeLeft] = useState({
         hours: 5,
         minutes: 48,
@@ -174,12 +178,12 @@ const PaymentDetailVA = () => {
                                         mr: 2,
                                     }}
                                 >
-                                    {currentBank.vaNumber}
+                                    {payment_code}
                                 </Typography>
                                 <Button
                                     variant='contained'
                                     size='small'
-                                    onClick={() => copyToClipboard(currentBank.vaNumber)}
+                                    onClick={() => copyToClipboard(payment_code as string)}
                                     sx={{
                                         backgroundColor: '#F9833A',
                                         borderRadius: 2,
@@ -193,16 +197,7 @@ const PaymentDetailVA = () => {
                                 </Button>
                             </Box>
 
-                            <Typography
-                                variant='body2'
-                                sx={{
-                                    color: '#3b82f6',
-                                    textAlign: 'center',
-                                    mb: 4,
-                                }}
-                            >
-                                Atas Nama: XENDIT TRIPFY
-                            </Typography>
+
                         </Paper>
 
                         {/* Payment Deadline */}
@@ -220,7 +215,7 @@ const PaymentDetailVA = () => {
                                     mb: 2,
                                 }}
                             >
-                                Senin, 23 Juni 2025 pukul 15.50 WIB
+                                Selasa, 08 Agustus 2025 pukul 15.50 WIB
                             </Typography>
 
                             <Typography variant='body2' sx={{ color: '#64748b', textAlign: 'center', mb: 3 }}>
@@ -297,18 +292,11 @@ const PaymentDetailVA = () => {
                                     Jumlah Tagihan
                                 </Typography>
                                 <Typography variant='body1' sx={{ color: '#1e293b', fontWeight: 'medium' }}>
-                                    Rp 850.000
+                                    Rp 800.000
                                 </Typography>
                             </Box>
 
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                                <Typography variant='body1' sx={{ color: '#64748b' }}>
-                                    Biaya Tambahan
-                                </Typography>
-                                <Typography variant='body1' sx={{ color: '#1e293b', fontWeight: 'medium' }}>
-                                    Rp 6.500
-                                </Typography>
-                            </Box>
+
 
                             <Divider sx={{ my: 2 }} />
 
@@ -317,7 +305,7 @@ const PaymentDetailVA = () => {
                                     Total Tagihan
                                 </Typography>
                                 <Typography variant='h6' sx={{ color: '#1e293b', fontWeight: 'bold' }}>
-                                    Rp 856.500
+                                    Rp 800.000
                                 </Typography>
                             </Box>
                         </Paper>
@@ -344,6 +332,7 @@ const PaymentDetailVA = () => {
                             </Button>
 
                             <Button
+                                onClick={() => router.push('/booking/payment/success')}
                                 variant='contained'
                                 sx={{
                                     borderRadius: 2,

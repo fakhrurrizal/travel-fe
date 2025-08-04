@@ -47,8 +47,12 @@ const LoginComponent: React.FC = () => {
             setAuth({ accessToken, user })
             axiosInterceptor.defaults.headers.common['Authorization'] = accessToken
             axios.defaults.headers.common['Authorization'] = accessToken
-            console.log('user,', user)
-            router.push('/dashboard')
+            if (user?.role?.id === 3) {
+                router.push('/')
+            } else {
+                router.push('/dashboard')
+            }
+
         } catch (error) {
             console.error('Login error:', error)
         }

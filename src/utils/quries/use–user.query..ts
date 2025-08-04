@@ -5,7 +5,7 @@ import queryString from 'query-string'
 import { getApi } from '../helpers'
 
 export const useUserParams = (args: PaginationArgs<any>) => {
-    const { status, pageIndex, pageSize, sort, searchValue, order } = args
+    const { status, pageIndex, pageSize, sort, searchValue, order, roleID } = args
 
     const query: Record<string, string | number> = {
         limit: Number(pageSize),
@@ -18,6 +18,10 @@ export const useUserParams = (args: PaginationArgs<any>) => {
 
     if (status) {
         query['status'] = status
+    }
+
+    if (roleID) {
+        query['role_id'] = roleID
     }
 
     if (searchValue) {

@@ -2,31 +2,33 @@
 
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import { ServerSideAutoComplete } from '@/components'
+import { useTransportationTypeParams } from '@/utils/quries/use-transportation-type.query'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Icon } from '@iconify/react'
 import {
     Box,
-    Container,
-    Typography,
-    TextField,
     Button,
-    Paper,
+    Chip,
+    Container,
+    Divider,
+    FormControl,
     Grid,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    Paper,
+    Select,
     Tab,
     Tabs,
-    Select,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    IconButton,
-    InputAdornment,
-    Divider,
+    TextField,
+    Typography
 } from '@mui/material'
-import { Icon } from '@iconify/react'
-import { useTransportationTypeParams } from '@/utils/quries/use-transportation-type.query'
-import { ServerSideAutoComplete } from '@/components'
-import { HomePageForm, homePageSchema } from './schema/form.schemas'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { HomePageForm } from './schema/form.schemas'
+import { HomeForm, homeSchema } from './schema/home.schemas'
 
 const HeroSection: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState(0)
@@ -52,14 +54,14 @@ const HeroSection: React.FC = () => {
         }
     }, [selectedTab, transportTabs])
 
-    const homeForm = useForm<HomePageForm>({
+    const form = useForm<HomeForm>({
         defaultValues: {
-            transportation_class_id: null,
+            trip_id: null,
         },
-        resolver: zodResolver(homePageSchema),
+        resolver: zodResolver(homeSchema),
     })
 
-    const { control } = homeForm
+    const router = useRouter()
 
     return (
         <Box sx={{ pt: 10 }}>
@@ -108,7 +110,7 @@ const HeroSection: React.FC = () => {
                                     paling menarik
                                 </Typography>
 
-                                <Button
+                                {/* <Button
                                     variant='contained'
                                     size='large'
                                     sx={{
@@ -130,7 +132,7 @@ const HeroSection: React.FC = () => {
                                     }}
                                 >
                                     Explore Now
-                                </Button>
+                                </Button> */}
                             </Box>
                         </Box>
                     </Grid>
@@ -153,7 +155,7 @@ const HeroSection: React.FC = () => {
                 <Box
                     sx={{
                         position: 'absolute',
-                        top: '55%',
+                        top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
                         width: '85%',
@@ -161,53 +163,213 @@ const HeroSection: React.FC = () => {
                         zIndex: 10,
                     }}
                 >
-                    <Paper
-                        elevation={12}
-                        sx={{
-                            borderRadius: 999,
-                            overflow: 'hidden',
-                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                            backdropFilter: 'blur(20px)',
-                            border: '1px solid rgba(255, 255, 255, 0.2)',
-                        }}
+                    <ServerSideAutoComplete<
+                        HomeForm,
+                        { id: number; label: string; location?: string; category?: { name: string }; image?: string },
+                        any
                     >
-                        <TextField
-                            fullWidth
-                            placeholder='Cari destinasi...'
-                            variant='outlined'
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position='end'>
-                                        <IconButton
-                                            edge='end'
+                        control={form.control}
+                        endpoint='trip'
+                        name='trip_id'
+                        label=''
+                        size='medium'
+                        placeholder='Cari destinasi impianmu...'
+                        formatOptions={response => {
+                            const options = response.data
+                            if (!options) return []
+
+                            return options.map((option: any) => ({
+                                id: option.id,
+                                label: option.name,
+                                location: option.location,
+                                category: option.category,
+                                image: option.image || option.thumbnail || '/default-trip.jpg',
+                            }))
+                        }}
+                        renderOption={(props, option) => (
+                            <Box
+                                component='li'
+                                {...props}
+                                sx={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    py: 2,
+                                    px: 2,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    '&:hover': {
+                                        backgroundColor: '#f8fafc',
+                                        transform: 'translateY(-1px)',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                    },
+                                }}
+                                onClick={() => {
+                                    const autocompleteElement = document.querySelector('[role="combobox"]') as HTMLInputElement
+                                    if (autocompleteElement) autocompleteElement.blur()
+
+                                    setTimeout(() => {
+                                        router.push(`/booking/payment?id=1&type=TRP`)
+                                    }, 100)
+                                }}
+                            >
+                                {/* Trip Image */}
+                                <Box
+                                    sx={{
+                                        width: 60,
+                                        height: 60,
+                                        borderRadius: 2,
+                                        overflow: 'hidden',
+                                        mr: 2,
+                                        flexShrink: 0,
+                                        position: 'relative',
+                                    }}
+                                >
+                                    <img
+                                        src={option.image}
+                                        alt={option.label}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover',
+                                        }}
+                                        onError={e => {
+                                            e.currentTarget.src = '/default-trip.jpg'
+                                        }}
+                                    />
+                                </Box>
+
+                                {/* Trip Details */}
+                                <Box sx={{ flex: 1, minWidth: 0 }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                                        <Icon icon='mdi:map-marker' style={{ marginRight: 8, color: '#0ea5e9', fontSize: 16 }} />
+                                        <Typography
+                                            variant='body1'
                                             sx={{
-                                                backgroundColor: '#F9833A',
-                                                color: 'white',
-                                                width: 48,
-                                                height: 48,
-                                                mr: 1,
-                                                '&:hover': {
-                                                    backgroundColor: '#d97706',
-                                                },
+                                                fontWeight: 600,
+                                                color: '#1f2937',
+                                                fontSize: '0.95rem',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                whiteSpace: 'nowrap',
                                             }}
                                         >
-                                            <Icon icon='mdi:magnify' width={24} height={24} />
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                                sx: {
-                                    '& .MuiOutlinedInput-notchedOutline': {
-                                        border: 'none',
+                                            {option.label}
+                                        </Typography>
+                                    </Box>
+
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 3 }}>
+                                        {option.location && (
+                                            <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: 0 }}>
+                                                <Icon icon='mdi:map-marker-outline' style={{ marginRight: 4, color: '#6b7280', fontSize: 12 }} />
+                                                <Typography
+                                                    variant='caption'
+                                                    sx={{
+                                                        color: '#6b7280',
+                                                        fontSize: '0.75rem',
+                                                        overflow: 'hidden',
+                                                        textOverflow: 'ellipsis',
+                                                        whiteSpace: 'nowrap',
+                                                    }}
+                                                >
+                                                    {option.location}
+                                                </Typography>
+                                            </Box>
+                                        )}
+                                        {option.category?.name && (
+                                            <Chip
+                                                label={option.category.name}
+                                                size='small'
+                                                sx={{
+                                                    height: 18,
+                                                    fontSize: '0.65rem',
+                                                    backgroundColor: '#eff6ff',
+                                                    color: '#0ea5e9',
+                                                    border: '1px solid #bfdbfe',
+                                                    '& .MuiChip-label': {
+                                                        px: 0.75,
+                                                        py: 0,
+                                                    },
+                                                    flexShrink: 0,
+                                                }}
+                                            />
+                                        )}
+                                    </Box>
+                                </Box>
+
+                                {/* Arrow Icon */}
+                                <Box sx={{ ml: 1, color: '#9ca3af' }}>
+                                    <Icon icon='mdi:chevron-right' style={{ fontSize: 20 }} />
+                                </Box>
+                            </Box>
+                        )}
+                        getOptionLabel={(option: any) => option?.label || ''}
+                        isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                        // InputProps={{
+                        //     InputProps: {
+                        //         endAdornment: (
+                        //             <InputAdornment position='end'>
+                        //                 <IconButton
+                        //                     sx={{
+                        //                         backgroundColor: '#fb923c',
+                        //                         color: 'white',
+                        //                         borderRadius: '50%',
+                        //                         p: 1.5,
+                        //                         '&:hover': {
+                        //                             backgroundColor: '#f97316',
+                        //                         },
+                        //                     }}
+                        //                 >
+                        //                     <Icon icon='mdi:magnify' fontSize={20} />
+                        //                 </IconButton>
+                        //             </InputAdornment>
+                        //         ),
+                        //         sx: {
+                        //             pr: 1.5,
+                        //         },
+                        //     },
+                        // }}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                borderRadius: '999px',
+                                backgroundColor: 'white',
+                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                            },
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                border: 'none',
+                            },
+                            '& .MuiInputBase-input': {
+                                py: 2.5,
+                                px: 3,
+                                fontSize: '1.1rem',
+                                '&::placeholder': {
+                                    color: '#9ca3af',
+                                    opacity: 1,
+                                },
+                            },
+                            '& .MuiAutocomplete-listbox': {
+                                maxHeight: 400,
+                                padding: 1,
+                                '& .MuiAutocomplete-option': {
+                                    minHeight: 76,
+                                    borderRadius: 2,
+                                    marginBottom: 1,
+                                    border: '1px solid #f3f4f6',
+                                    '&:last-child': {
+                                        marginBottom: 0,
                                     },
-                                    '& .MuiInputBase-input': {
-                                        py: 2,
-                                        px: 4,
-                                        fontSize: '1rem',
+                                    '&[aria-selected="true"]': {
+                                        backgroundColor: '#eff6ff !important',
+                                        borderColor: '#bfdbfe',
                                     },
                                 },
-                            }}
-                        />
-                    </Paper>
+                            },
+                            '& .MuiAutocomplete-paper': {
+                                borderRadius: 3,
+                                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                                border: '1px solid #e5e7eb',
+                            },
+                        }}
+                    />
                 </Box>
 
                 {/* Transport Tabs & Booking Form */}
@@ -351,7 +513,7 @@ const HeroSection: React.FC = () => {
                                 {/* Flight Class */}
                                 <Grid item xs={12} md={3}>
                                     <ServerSideAutoComplete<HomePageForm, { id: number; label: string }, any>
-                                        control={control}
+                                        control={form.control}
                                         endpoint='transportation_class'
                                         name='transportation_class_id'
                                         queryEndpoint={{

@@ -7,6 +7,7 @@ export const endpoints = {
     trip: 'trip',
     file: 'file',
     email_verification: 'auth/email-verification',
+    transaction: 'transaction',
 
     // user
     user: 'user',

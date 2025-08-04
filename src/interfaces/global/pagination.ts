@@ -11,6 +11,7 @@ export interface PaginationArgs<T = any> {
     transportationRoute?: string
     arrivalTerminal?: string
     departureTerminal?: string
+    roleID?: number
 }
 
 export type Order = 'desc' | 'asc'

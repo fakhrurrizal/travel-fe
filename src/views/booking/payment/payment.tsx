@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 import {
     Box,
@@ -15,19 +15,27 @@ import {
     FormControl,
     Divider,
 } from '@mui/material'
+import { useTransaction } from '@/utils/mutations/use-transaction.mutation'
+import { toast } from 'react-toastify'
 
 const PaymentPage = () => {
     const [selectedPayment, setSelectedPayment] = useState('mandiri')
 
+    const { mutateAsync: add_user } = useTransaction()
+
     const router = useRouter()
 
-    const handlePayment = () => {
-        // Cek apakah metode yang dipilih adalah virtual account
+    const searchParams = useSearchParams();
+    const type = searchParams.get('type');
+
+    const handlePayment = async () => {
+
         if (['mandiri', 'bca', 'bni'].includes(selectedPayment)) {
-            router.push(`/booking/payment/${selectedPayment}`) // arahkan ke route dinamis sesuai bank
+
+            const res = await add_user({ payment_channel_id: 4, transportation_id: 1, trip_id: 4, type: type })
+            router.push(`/booking/payment/${selectedPayment}?invoice_id=${res.data.data.invoice_id}&payment_code=${res.data.data.payment.payment_code}`)
         } else {
-            // Kalau metode lain, bisa handle di sini (misal kartu kredit, qris, dsb)
-            alert('Metode pembayaran belum didukung atau halaman belum tersedia.')
+            toast.warning('Metode pembayaran belum didukung atau halaman belum tersedia.')
         }
     }
 
@@ -181,18 +189,11 @@ const PaymentPage = () => {
                                         Subtotal
                                     </Typography>
                                     <Typography variant='body1' sx={{ color: '#1e293b', fontWeight: 'medium' }}>
-                                        {formatPrice(850000)}
+                                        {formatPrice(800000)}
                                     </Typography>
                                 </Box>
 
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                                    <Typography variant='body1' sx={{ color: '#64748b' }}>
-                                        Biaya Transaksi
-                                    </Typography>
-                                    <Typography variant='body1' sx={{ color: '#1e293b', fontWeight: 'medium' }}>
-                                        {formatPrice(6500)}
-                                    </Typography>
-                                </Box>
+
 
                                 <Divider sx={{ my: 2 }} />
 
@@ -201,7 +202,7 @@ const PaymentPage = () => {
                                         Total Pembayaran
                                     </Typography>
                                     <Typography variant='h6' sx={{ color: '#1e293b', fontWeight: 'bold' }}>
-                                        {formatPrice(856500)}
+                                        {formatPrice(800000)}
                                     </Typography>
                                 </Box>
                             </Box>

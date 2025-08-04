@@ -2,11 +2,12 @@
 
 import { getNavbarLayout } from '@/components'
 import { NextPageWithLayout } from '@/utils'
+import DashboardView from '@/views/dashboard'
 
 const DashboardPage: NextPageWithLayout = () => {
     return (
         <div>
-            <h1>Dashboard</h1>
+            <DashboardView/>
         </div>
     )
 }

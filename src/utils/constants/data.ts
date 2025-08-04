@@ -75,13 +75,13 @@ export const menu_static = [
             },
         ],
     },
-    {
-        path: '/laporan',
-        name: 'Laporan',
-        role: [1, 2],
-        icon: 'mdi:flag-outline',
-        children: [],
-    },
+    // {
+    //     path: '/laporan',
+    //     name: 'Laporan',
+    //     role: [1, 2],
+    //     icon: 'mdi:flag-outline',
+    //     children: [],
+    // },
 ]
 
 export interface MenuItem {

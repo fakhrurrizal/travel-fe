@@ -20,7 +20,7 @@ import { useUserParams } from '@/utils/quries/use–user.query.'
 
 const HeaderItems = [
     {
-        label: 'Nama Lengkap',
+        label: 'Nama Agen',
         alignCenter: false,
     },
     {
@@ -41,7 +41,7 @@ const HeaderItems = [
     },
 ]
 
-const UserListPageViews = () => {
+const UserAgenListPageViews = () => {
     const [pageSize, setPageSize] = useState<number>(10)
 
     const [page, setPage] = useState<number>(1)
@@ -75,7 +75,7 @@ const UserListPageViews = () => {
             pageIndex: page,
             transportationType: user_type_id as string,
             sort: sort ? (sort as Order) : undefined,
-            roleID: 3,
+            roleID: 2,
         })
 
     const handleLimitChange = useCallback((e: SelectChangeEvent) => {
@@ -108,13 +108,14 @@ const UserListPageViews = () => {
     return (
         <>
             <div className='custom__styled__container'>
-                <HeaderSectionTableCustom title={'Daftar User'} />
+                <HeaderSectionTableCustom title={'Daftar Agen'} />
                 <ToolbarSectionTableCustom
                     searchValue={searchValue}
                     handleSearch={handleSearch}
                     isLoading={isLoading}
                     toggleFilter={toggleFilter}
-                    disabledAdd
+                    addButtonLabel='Tambah Agen'
+                    toggleAdd={toggleAdd}
                 />
                 <CustomStyledTableContainer isLoading={isLoading} recordsFiltered={recordsFiltered}>
                     <CustomStyledTable>
@@ -182,4 +183,4 @@ const UserListPageViews = () => {
     )
 }
 
-export default UserListPageViews
+export default UserAgenListPageViews

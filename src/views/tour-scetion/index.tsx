@@ -13,7 +13,7 @@ const ToursSection: React.FC = () => {
             id: '1',
             title: 'Nusa Penida',
             image: '/images/nusa-penida.png',
-            price: 850000,
+            price: 800000,
             location: 'Bali',
             rating: 5,
             reviewCount: 350,

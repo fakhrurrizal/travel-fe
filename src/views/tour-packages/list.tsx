@@ -23,9 +23,13 @@ import {
     Rating,
 } from '@mui/material'
 import { Icon } from '@iconify/react'
+import { useRouter } from 'next/router'
 
 // Mock data untuk destinasi
 const TourPackagesPage = () => {
+
+    const router = useRouter()
+
     const destinations = [
         // Bali
         {
@@ -35,7 +39,7 @@ const TourPackagesPage = () => {
             location: 'Bali',
             province: 'bali',
             image: '/images/nusa-penida.png',
-            price: 850000,
+            price: 800000,
             rating: 5,
             reviews: 350,
             date: '20 Agust - 21 Agust 2025',
@@ -186,7 +190,7 @@ const TourPackagesPage = () => {
             location: 'Nusa Tenggara Barat',
             province: 'nusa-tenggara-barat',
             image: '/images/gunung-rinjani.jpg',
-            price: 850000,
+            price: 800000,
             rating: 4.9,
             reviews: 445,
             date: '5 Agust 2025',
@@ -305,6 +309,7 @@ const TourPackagesPage = () => {
 
         return (
             <Card
+                onClick={() => router.push(`/booking/payment?id=${destination.id}`)}
                 sx={{
                     borderRadius: 3,
                     overflow: 'hidden',
