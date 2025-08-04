@@ -58,7 +58,7 @@ export const menu_static = [
         ],
     },
     {
-        path: '/manage-user',
+        path: '#',
         name: 'Kelola Akun',
         role: [1],
         icon: 'mdi:account-outline',

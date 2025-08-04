@@ -1,5 +1,5 @@
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'; // Descending icon
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'; // Ascending icon
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward' // Descending icon
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward' // Ascending icon
 import { Checkbox } from '@mui/material'
 import { Fragment, useState } from 'react'
 
@@ -69,8 +69,9 @@ const TableHeaderCustomTable = ({
                                 onClick={() => item.sortable && item.field && handleSort(item.field)}
                             >
                                 <div
-                                    className={`${item.sortable && 'cursor-pointer py-1 hover:px-2 hover:bg-slate-300 rounded-md'
-                                        }`}
+                                    className={`${
+                                        item.sortable && 'cursor-pointer py-1 hover:px-2 hover:bg-slate-300 rounded-md'
+                                    }`}
                                 >
                                     {item?.label?.toUpperCase()}
                                     {item.sortable && sortConfig?.field === item.field && sortConfig?.direction && (
