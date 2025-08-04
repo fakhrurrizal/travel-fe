@@ -31,7 +31,9 @@ const FormDataModal = ({ form }: Props) => {
                                 id: option.id,
                                 label: option.name,
                             }))
-                        } } endpoint={'file'}                    /> 
+                        }}
+                        endpoint={'file'}
+                    />
                 </Grid>
                 <Grid item xs={12} md={12}>
                     <CustomTextField control={control} name='name' label='Nama User' inputFormat='NORMAL' />

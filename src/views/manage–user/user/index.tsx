@@ -8,7 +8,6 @@ import CustomStyledTableRow from '@/components/custom-table/table/custom-styled-
 import TableHeaderCustomTable from '@/components/custom-table/table/header'
 import ToolbarSectionTableCustom from '@/components/custom-table/toolbar'
 import { Order } from '@/interfaces'
-import { useTransportationClassParams } from '@/utils/quries/use-transportation-class.query'
 import { SelectChangeEvent } from '@mui/material'
 import { useRouter } from 'next/router'
 import { Fragment, useCallback, useEffect, useState } from 'react'
@@ -17,6 +16,7 @@ import AddUser from './modal/add'
 import FilterUser from './modal/filter'
 import { UserFilter } from './schema/filter.schema'
 import RowOptions from './table/row-options'
+import { useUserParams } from '@/utils/quries/use–user.query.'
 
 const HeaderItems = [
     {
@@ -69,7 +69,7 @@ const UserListPageViews = () => {
         data: { data: ListData = [], recordsFiltered = 0 } = { data: [] },
         isLoading,
     } = //jgn diapa apain
-        useTransportationClassParams({
+        useUserParams({
             pageSize: pageSize,
             searchValue: debouncedSearchValue,
             pageIndex: page,
@@ -96,7 +96,7 @@ const UserListPageViews = () => {
         }
     }, [searchValue])
 
-    const handlePageChange = (event: any, newPage: number) => {
+    const handlePageChange = (_event: any, newPage: number) => {
         setPage(newPage)
     }
 
@@ -127,19 +127,33 @@ const UserListPageViews = () => {
                                     return (
                                         <Fragment key={item?.id}>
                                             <CustomStyledTableRow>
-                                                <CustomStyledTableHead>Maaseya</CustomStyledTableHead>
-                                                <CustomStyledTableData className='text- left'>
-                                                    maaseya99@gmail.com
+                                                <CustomStyledTableHead>{item?.fullname || '-'}</CustomStyledTableHead>
+                                                <CustomStyledTableData className='text-left'>
+                                                    {item?.email || '-'}
                                                 </CustomStyledTableData>
 
                                                 <CustomStyledTableData className='truncate max-w-[190px]'>
-                                                    <CustomTooltip title={item?.description ?? ''}>
-                                                        <span className='block truncate'>085799812345</span>
+                                                    <CustomTooltip title={item?.phone || ''}>
+                                                        <span className='block truncate'>{item?.phone || '-'}</span>
                                                     </CustomTooltip>
                                                 </CustomStyledTableData>
 
                                                 <CustomStyledTableData className='text-center'>
-                                                    Aktif
+                                                    <span
+                                                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                            item?.status === 1
+                                                                ? 'bg-green-100 text-green-800'
+                                                                : item?.status === 0
+                                                                  ? 'bg-red-100 text-red-800'
+                                                                  : 'bg-gray-100 text-gray-800'
+                                                        }`}
+                                                    >
+                                                        {item?.status === 1
+                                                            ? 'Aktif'
+                                                            : item?.status === 0
+                                                              ? 'Tidak Aktif'
+                                                              : '-'}
+                                                    </span>
                                                 </CustomStyledTableData>
                                                 <CustomStyledTableData className='text-center'>
                                                     <RowOptions data={item} />

@@ -29,7 +29,7 @@ export const useUserParams = (args: PaginationArgs<any>) => {
     }
 
     const endpoint = queryString.stringifyUrl({
-        url: getApi('transportation_class'),
+        url: getApi('user'),
         query,
     })
 
