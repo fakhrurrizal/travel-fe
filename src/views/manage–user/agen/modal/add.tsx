@@ -27,7 +27,7 @@ const AddUser = (props: ModalAdd) => {
             email: '',
             phone: '',
             fullname: '',
-            status: null
+            status: null,
         },
         resolver: zodResolver(userSchema),
     })

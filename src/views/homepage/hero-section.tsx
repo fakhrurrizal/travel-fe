@@ -235,7 +235,7 @@ const HeroSection: React.FC = () => {
                                             height: '100%',
                                             objectFit: 'cover',
                                         }}
-                                        onError={(e) => {
+                                        onError={e => {
                                             e.currentTarget.src = '/images/no-image.jpg'
                                         }}
                                     />
@@ -366,7 +366,6 @@ const HeroSection: React.FC = () => {
                                     '&:last-child': {
                                         marginBottom: 0,
                                     },
-
                                 },
                             },
                             '& .MuiAutocomplete-paper': {

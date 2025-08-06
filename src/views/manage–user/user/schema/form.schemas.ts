@@ -20,7 +20,7 @@ export const userSchema = z
                 }
             ),
     })
-   
+
     .transform(data => {
         const newData: any = { ...data }
 

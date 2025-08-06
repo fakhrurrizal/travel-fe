@@ -22,28 +22,13 @@ const FormDataModal = ({ form }: Props) => {
         <>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={12}>
-                    <CustomTextField
-                        control={control}
-                        name='fullname'
-                        label='Nama Agen'
-                        inputFormat='NORMAL'
-                    />
+                    <CustomTextField control={control} name='fullname' label='Nama Agen' inputFormat='NORMAL' />
                 </Grid>
                 <Grid item xs={12} md={12}>
-                    <CustomTextField
-                        control={control}
-                        name='phone'
-                        label='No. Telpon'
-                        inputFormat='PHONE'
-                    />
+                    <CustomTextField control={control} name='phone' label='No. Telpon' inputFormat='PHONE' />
                 </Grid>
                 <Grid item xs={12} md={12}>
-                    <CustomTextField
-                        control={control}
-                        name='email'
-                        label='Email'
-                        inputFormat='EMAIL'
-                    />
+                    <CustomTextField control={control} name='email' label='Email' inputFormat='EMAIL' />
                 </Grid>
                 <Grid item xs={12} md={12}>
                     <StaticAutoComplete

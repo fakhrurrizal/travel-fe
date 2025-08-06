@@ -30,7 +30,7 @@ const EditUser = (props: ModalAdd) => {
             email: '',
             phone: '',
             fullname: '',
-            status: null
+            status: null,
         },
         resolver: zodResolver(userSchema),
     })
@@ -41,7 +41,7 @@ const EditUser = (props: ModalAdd) => {
         if (data) {
             reset({
                 phone: data.phone.toString(),
-                status: Status.find((item) => item?.id === data.status),
+                status: Status.find(item => item?.id === data.status),
                 fullname: data.fullname.toString(),
                 email: data.email.toString(),
             })

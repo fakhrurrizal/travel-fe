@@ -41,7 +41,7 @@ const EditTransportationSchedule = (props: ModalAdd) => {
         resolver: zodResolver(transportationScheduleSchema),
     })
 
-    const { handleSubmit, reset, } = addTransportationScheduleForm
+    const { handleSubmit, reset } = addTransportationScheduleForm
 
     useEffect(() => {
         if (data) {
@@ -49,18 +49,18 @@ const EditTransportationSchedule = (props: ModalAdd) => {
                 transportation_class_id:
                     data.transportation_class?.id > 0
                         ? {
-                            id: data.transportation_class?.id,
-                            label: data.transportation_class?.name,
-                            transportation_type_name: data.transportation_class.transportation_type?.name,
-                            transportation_type_id: data.transportation_class.transportation_type.id,
-                        }
+                              id: data.transportation_class?.id,
+                              label: data.transportation_class?.name,
+                              transportation_type_name: data.transportation_class.transportation_type?.name,
+                              transportation_type_id: data.transportation_class.transportation_type.id,
+                          }
                         : null,
                 transportation_route_id:
                     data.transportation_route?.id > 0
                         ? {
-                            id: data.transportation_route?.id,
-                            label: data.transportation_route?.name,
-                        }
+                              id: data.transportation_route?.id,
+                              label: data.transportation_route?.name,
+                          }
                         : null,
                 vehicle_name: data.vehicle_name.toString(),
                 image: data.image.toString(),

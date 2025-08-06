@@ -46,32 +46,32 @@ const EditTransportationRoute = (props: ModalAdd) => {
                 transportation_type_id:
                     data.transportation_type?.id > 0
                         ? {
-                            id: data.transportation_type?.id,
-                            label: data.transportation_type?.name,
-                        }
+                              id: data.transportation_type?.id,
+                              label: data.transportation_type?.name,
+                          }
                         : null,
                 transportation_company_id:
                     data.transportation_company?.id > 0
                         ? {
-                            id: data.transportation_company?.id,
-                            label: data.transportation_company?.name,
-                        }
+                              id: data.transportation_company?.id,
+                              label: data.transportation_company?.name,
+                          }
                         : null,
                 departure_terminal_id:
                     data.departure_terminal?.id > 0
                         ? {
-                            id: data.departure_terminal?.id,
-                            label: data.departure_terminal?.name,
-                            code: data.departure_terminal?.code,
-                        }
+                              id: data.departure_terminal?.id,
+                              label: data.departure_terminal?.name,
+                              code: data.departure_terminal?.code,
+                          }
                         : null,
                 arrival_terminal_id:
                     data.arrival_terminal?.id > 0
                         ? {
-                            id: data.arrival_terminal?.id,
-                            label: data.arrival_terminal?.name,
-                            code: data.arrival_terminal?.code,
-                        }
+                              id: data.arrival_terminal?.id,
+                              label: data.arrival_terminal?.name,
+                              code: data.arrival_terminal?.code,
+                          }
                         : null,
                 name: data.name.toString(),
                 distance_km: data.distance_km.toString(),
