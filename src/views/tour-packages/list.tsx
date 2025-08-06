@@ -27,7 +27,6 @@ import { useRouter } from 'next/router'
 
 // Mock data untuk destinasi
 const TourPackagesPage = () => {
-
     const router = useRouter()
 
     const destinations = [

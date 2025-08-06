@@ -2,35 +2,29 @@ import { z } from 'zod'
 
 export const userSchema = z
     .object({
-        user_type_id: z
-            .object({ label: z.string(), id: z.number() })
-            .nullable()
-            .superRefine((data, context) => {
-                if (!data) {
-                    context.addIssue({
-                        code: z.ZodIssueCode.custom,
-                        message: 'Jenis User tidak boleh kosong',
-                    })
+        status: z.object({ label: z.string(), id: z.number() }).nullable(),
+        fullname: z.string().min(1, { message: 'Nama Agen tidak boleh kosong' }),
+        email: z.string().min(1, 'Email wajib diisi').email('Silakan masukkan alamat email yang valid'),
+        phone: z
+            .string()
+            .min(1, 'Nomor telepon wajib diisi')
+            .regex(/^[8][\d-]+$/, 'Masukkan nomor diawali angka 8 dan hanya berisi angka atau tanda hubung')
+            .refine(
+                val => {
+                    const cleaned = val.replace(/[^0-9]/g, '')
+
+                    return cleaned.length >= 9 && cleaned.length <= 12
+                },
+                {
+                    message: 'Nomor telepon harus terdiri dari 9–12 digit angka (tidak termasuk angka 0 di depan)',
                 }
-            }),
-        name: z.string().min(1, { message: 'Nama User tidak boleh kosong' }),
-        description: z.string().min(1, { message: 'Keterangan tidak boleh kosong' }),
-        code: z.string().min(1, { message: 'Kode tidak boleh kosong' }),
+            ),
     })
-    .superRefine((data, context) => {
-        if (!data.user_type_id) {
-            context.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: 'Jenis User tidak boleh kosong',
-            })
-        }
-    })
+
     .transform(data => {
         const newData: any = { ...data }
 
-        if (data.user_type_id) {
-            newData.user_type_id = data.user_type_id.id
-        }
+        newData.status = data.status?.id
 
         return newData
     })

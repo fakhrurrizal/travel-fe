@@ -60,7 +60,6 @@ const UserAgenListPageViews = () => {
 
     const form = useForm<UserFilter>({
         defaultValues: {
-            user_type: null,
             sort: null,
         },
     })
@@ -114,8 +113,8 @@ const UserAgenListPageViews = () => {
                     handleSearch={handleSearch}
                     isLoading={isLoading}
                     toggleFilter={toggleFilter}
-                    addButtonLabel='Tambah Agen'
                     toggleAdd={toggleAdd}
+                    addButtonLabel='Tambah Agen'
                 />
                 <CustomStyledTableContainer isLoading={isLoading} recordsFiltered={recordsFiltered}>
                     <CustomStyledTable>

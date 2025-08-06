@@ -42,11 +42,11 @@ export const transportationScheduleSchema = z
             message: 'Waktu kedatangan tidak valid',
         }),
 
-        valid_from: z.custom<Dayjs>(val => dayjs.isDayjs(val), {
+        valid_from: z.string().refine(val => dayjs(val, 'YYYY-MM-DD', true).isValid(), {
             message: 'Tanggal mulai tidak valid',
         }),
 
-        valid_until: z.custom<Dayjs>(val => dayjs.isDayjs(val), {
+        valid_until: z.string().refine(val => dayjs(val, 'YYYY-MM-DD', true).isValid(), {
             message: 'Tanggal akhir tidak valid',
         }),
     })

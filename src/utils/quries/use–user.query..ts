@@ -44,6 +44,6 @@ export const useUserParams = (args: PaginationArgs<any>) => {
             return res.data
         },
         refetchOnWindowFocus: false,
-        queryKey: ['LIST_TRANSPORTATION_CLASS_ALL', query, args],
+        queryKey: ['LIST_USER_ALL', query, args],
     })
 }

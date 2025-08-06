@@ -140,7 +140,7 @@ const TransportationScheduleListPageViews = () => {
                                         <Fragment key={item?.id}>
                                             <CustomStyledTableRow>
                                                 <CustomStyledTableHead>
-                                                    {item?.transportation_class?.transportation_type}
+                                                    {item?.transportation_class?.transportation_type?.name}
                                                 </CustomStyledTableHead>
                                                 <CustomStyledTableData>{item?.vehicle_name}</CustomStyledTableData>
                                                 <CustomStyledTableData>

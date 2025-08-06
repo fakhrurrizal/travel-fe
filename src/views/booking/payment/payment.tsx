@@ -25,15 +25,15 @@ const PaymentPage = () => {
 
     const router = useRouter()
 
-    const searchParams = useSearchParams();
-    const type = searchParams.get('type');
+    const searchParams = useSearchParams()
+    const type = searchParams.get('type')
 
     const handlePayment = async () => {
-
         if (['mandiri', 'bca', 'bni'].includes(selectedPayment)) {
-
             const res = await add_user({ payment_channel_id: 4, transportation_id: 1, trip_id: 4, type: type })
-            router.push(`/booking/payment/${selectedPayment}?invoice_id=${res.data.data.invoice_id}&payment_code=${res.data.data.payment.payment_code}`)
+            router.push(
+                `/booking/payment/${selectedPayment}?invoice_id=${res.data.data.invoice_id}&payment_code=${res.data.data.payment.payment_code}`
+            )
         } else {
             toast.warning('Metode pembayaran belum didukung atau halaman belum tersedia.')
         }
@@ -192,8 +192,6 @@ const PaymentPage = () => {
                                         {formatPrice(800000)}
                                     </Typography>
                                 </Box>
-
-
 
                                 <Divider sx={{ my: 2 }} />
 

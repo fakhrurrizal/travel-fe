@@ -10,7 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import Stack from '@mui/material/Stack'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import FormDataModal from './form-data'
+import FormDataModal, { Status } from './form-data'
 import { UserForm, userSchema } from '../schema/form.schemas'
 import { useEditUser } from '@/utils/mutations/use-user.mutation'
 
@@ -27,10 +27,10 @@ const EditUser = (props: ModalAdd) => {
 
     const addUserForm = useForm<UserForm>({
         defaultValues: {
-            user_type_id: null,
-            code: '',
-            description: '',
-            name: '',
+            email: '',
+            phone: '',
+            fullname: '',
+            status: null
         },
         resolver: zodResolver(userSchema),
     })
@@ -40,17 +40,10 @@ const EditUser = (props: ModalAdd) => {
     useEffect(() => {
         if (data) {
             reset({
-                user_type_id:
-                    data.user_type?.id > 0
-                        ? {
-                              id: data.user_type?.id,
-                              label: data.user_type?.name,
-                          }
-                        : null,
-
-                code: data.code.toString(),
-                name: data.name.toString(),
-                description: data.description.toString(),
+                phone: data.phone.toString(),
+                status: Status.find((item) => item?.id === data.status),
+                fullname: data.fullname.toString(),
+                email: data.email.toString(),
             })
         }
     }, [data, reset, addUserForm])
@@ -58,7 +51,7 @@ const EditUser = (props: ModalAdd) => {
     const onSubmit: any = async (data: UserForm) => {
         const userData = objectClear<UserForm>(data)
 
-        await edit_user({ ...userData })
+        await edit_user({ ...userData, role_id: 2 })
 
         queryClient.invalidateQueries({ queryKey: ['LIST_USER_ALL'] })
 
@@ -75,7 +68,7 @@ const EditUser = (props: ModalAdd) => {
         <>
             <Dialog fullWidth open={open} maxWidth='md'>
                 <DialogTitle fontWeight={600} sx={{ position: 'relative' }}>
-                    Edit User {data.name}
+                    Edit Agen {data.name}
                 </DialogTitle>
                 <DialogContent dividers>
                     <Stack spacing={4}>

@@ -1,4 +1,5 @@
-import { ServerSideAutoComplete, StaticAutoComplete } from '@/components'
+import { StaticAutoComplete } from '@/components'
+import { queryClient } from '@/utils'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -10,7 +11,6 @@ import { useRouter } from 'next/router'
 import queryString from 'query-string'
 import { UseFormReturn } from 'react-hook-form'
 import { UserFilter } from '../schema/filter.schema'
-import { queryClient } from '@/utils'
 
 interface ModalFilter {
     open: boolean
@@ -33,7 +33,6 @@ const FilterUser = (props: ModalFilter) => {
     const onSubmit = async (data: UserFilter) => {
         const queryParams = queryString.stringify(
             {
-                user_type_id: data.user_type?.id ?? '',
                 sort: data.sort?.id ?? '',
             },
             {
@@ -70,26 +69,6 @@ const FilterUser = (props: ModalFilter) => {
                 <Stack spacing={12}>
                     <Box>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} md={12}>
-                                <ServerSideAutoComplete<UserFilter, { id: number; label: string }, any>
-                                    control={control}
-                                    idEndpoint='user_type' //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< endpoint=idEndpoint
-                                    name='user_type'
-                                    label='Jenis User'
-                                    formatOptions={response => {
-                                        const options = response.data
-
-                                        if (!options) return []
-
-                                        return options.map((option: any) => ({
-                                            id: option.id,
-                                            label: option.name,
-                                        }))
-                                    }}
-                                    endpoint={'trip'} //<<<<<<<
-                                />
-                            </Grid>
-
                             <Grid item xs={12} md={12}>
                                 <StaticAutoComplete
                                     control={control}

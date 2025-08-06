@@ -1,4 +1,4 @@
-import { ServerSideAutoComplete } from '@/components'
+import { StaticAutoComplete } from '@/components'
 import CustomTextField from '@/components/text-field/custom-text-field'
 import { Grid } from '@mui/material'
 import { UseFormReturn } from 'react-hook-form'
@@ -10,49 +10,48 @@ interface Props {
     for_edit?: boolean
 }
 
+export const Status: { id: number; label: string }[] = [
+    { id: 1, label: 'Aktif' },
+    { id: 0, label: 'Nonaktif' },
+]
+
 const FormDataModal = ({ form }: Props) => {
     const { control } = form
 
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <ServerSideAutoComplete<UserForm, { id: number; label: string }, any>
-                        control={control}
-                        idEndpoint='user_type' //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< endpoint=id
-                        name='user_type_id'
-                        label='Jenis User'
-                        queryEndpoint={{ app_id: 1 }}
-                        formatOptions={response => {
-                            const options = response.data
-                            if (!options) return []
-
-                            return options.map((option: any) => ({
-                                id: option.id,
-                                label: option.name,
-                            }))
-                        }}
-                        endpoint={'file'}
-                    />
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <CustomTextField control={control} name='name' label='Nama User' inputFormat='NORMAL' />
-                </Grid>
                 <Grid item xs={12} md={12}>
                     <CustomTextField
                         control={control}
-                        name='code'
-                        textUppercase
-                        label='Kode User'
+                        name='fullname'
+                        label='Nama Agen'
                         inputFormat='NORMAL'
                     />
                 </Grid>
                 <Grid item xs={12} md={12}>
                     <CustomTextField
                         control={control}
-                        name='description'
-                        label='Keterangan User'
-                        inputFormat='NORMAL'
+                        name='phone'
+                        label='No. Telpon'
+                        inputFormat='PHONE'
+                    />
+                </Grid>
+                <Grid item xs={12} md={12}>
+                    <CustomTextField
+                        control={control}
+                        name='email'
+                        label='Email'
+                        inputFormat='EMAIL'
+                    />
+                </Grid>
+                <Grid item xs={12} md={12}>
+                    <StaticAutoComplete
+                        control={control}
+                        name='status'
+                        label='Status User'
+                        options={Status}
+                        disableClearable
                     />
                 </Grid>
             </Grid>

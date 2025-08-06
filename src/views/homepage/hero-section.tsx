@@ -22,7 +22,7 @@ import {
     Tab,
     Tabs,
     TextField,
-    Typography
+    Typography,
 } from '@mui/material'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -172,6 +172,7 @@ const HeroSection: React.FC = () => {
                         endpoint='trip'
                         name='trip_id'
                         label=''
+                        queryEndpoint={{ app_id: 1 }}
                         size='medium'
                         placeholder='Cari destinasi impianmu...'
                         formatOptions={response => {
@@ -183,7 +184,7 @@ const HeroSection: React.FC = () => {
                                 label: option.name,
                                 location: option.location,
                                 category: option.category,
-                                image: option.image || option.thumbnail || '/default-trip.jpg',
+                                image: option.image[0] || '/images/no-image.jpg',
                             }))
                         }}
                         renderOption={(props, option) => (
@@ -204,7 +205,9 @@ const HeroSection: React.FC = () => {
                                     },
                                 }}
                                 onClick={() => {
-                                    const autocompleteElement = document.querySelector('[role="combobox"]') as HTMLInputElement
+                                    const autocompleteElement = document.querySelector(
+                                        '[role="combobox"]'
+                                    ) as HTMLInputElement
                                     if (autocompleteElement) autocompleteElement.blur()
 
                                     setTimeout(() => {
@@ -225,15 +228,15 @@ const HeroSection: React.FC = () => {
                                     }}
                                 >
                                     <img
-                                        src={option.image}
+                                        src={option.image?.[0] || '/images/no-image.jpg'}
                                         alt={option.label}
                                         style={{
                                             width: '100%',
                                             height: '100%',
                                             objectFit: 'cover',
                                         }}
-                                        onError={e => {
-                                            e.currentTarget.src = '/default-trip.jpg'
+                                        onError={(e) => {
+                                            e.currentTarget.src = '/images/no-image.jpg'
                                         }}
                                     />
                                 </Box>
@@ -241,7 +244,10 @@ const HeroSection: React.FC = () => {
                                 {/* Trip Details */}
                                 <Box sx={{ flex: 1, minWidth: 0 }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                                        <Icon icon='mdi:map-marker' style={{ marginRight: 8, color: '#0ea5e9', fontSize: 16 }} />
+                                        <Icon
+                                            icon='mdi:map-marker'
+                                            style={{ marginRight: 8, color: '#0ea5e9', fontSize: 16 }}
+                                        />
                                         <Typography
                                             variant='body1'
                                             sx={{
@@ -260,7 +266,10 @@ const HeroSection: React.FC = () => {
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 3 }}>
                                         {option.location && (
                                             <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: 0 }}>
-                                                <Icon icon='mdi:map-marker-outline' style={{ marginRight: 4, color: '#6b7280', fontSize: 12 }} />
+                                                <Icon
+                                                    icon='mdi:map-marker-outline'
+                                                    style={{ marginRight: 4, color: '#6b7280', fontSize: 12 }}
+                                                />
                                                 <Typography
                                                     variant='caption'
                                                     sx={{
@@ -357,10 +366,7 @@ const HeroSection: React.FC = () => {
                                     '&:last-child': {
                                         marginBottom: 0,
                                     },
-                                    '&[aria-selected="true"]': {
-                                        backgroundColor: '#eff6ff !important',
-                                        borderColor: '#bfdbfe',
-                                    },
+
                                 },
                             },
                             '& .MuiAutocomplete-paper': {

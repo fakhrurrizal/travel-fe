@@ -60,7 +60,6 @@ const UserListPageViews = () => {
 
     const form = useForm<UserFilter>({
         defaultValues: {
-            user_type: null,
             sort: null,
         },
     })
@@ -141,10 +140,10 @@ const UserListPageViews = () => {
                                                 <CustomStyledTableData className='text-center'>
                                                     <span
                                                         className={`px-2 py-1 rounded-full text-xs font-medium ${item?.status === 1
-                                                            ? 'bg-green-100 text-green-800'
-                                                            : item?.status === 0
-                                                                ? 'bg-red-100 text-red-800'
-                                                                : 'bg-gray-100 text-gray-800'
+                                                                ? 'bg-green-100 text-green-800'
+                                                                : item?.status === 0
+                                                                    ? 'bg-red-100 text-red-800'
+                                                                    : 'bg-gray-100 text-gray-800'
                                                             }`}
                                                     >
                                                         {item?.status === 1

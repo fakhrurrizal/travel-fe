@@ -24,10 +24,10 @@ const AddUser = (props: ModalAdd) => {
     const { open, toggle } = props
     const addUserForm = useForm<UserForm>({
         defaultValues: {
-            user_type_id: null,
-            code: '',
-            description: '',
-            name: '',
+            email: '',
+            phone: '',
+            fullname: '',
+            status: null
         },
         resolver: zodResolver(userSchema),
     })
@@ -37,7 +37,7 @@ const AddUser = (props: ModalAdd) => {
     const onSubmit: any = async (data: UserForm) => {
         const userData = objectClear<UserForm>(data)
 
-        await add_user({ ...userData, app_id: 1 })
+        await add_user({ ...userData, app_id: 1, role_id: 2 })
 
         queryClient.invalidateQueries({ queryKey: ['LIST_USER_ALL'] })
 

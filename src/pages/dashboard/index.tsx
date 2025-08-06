@@ -7,7 +7,7 @@ import DashboardView from '@/views/dashboard'
 const DashboardPage: NextPageWithLayout = () => {
     return (
         <div>
-            <DashboardView/>
+            <DashboardView />
         </div>
     )
 }

@@ -24,10 +24,10 @@ const AddUser = (props: ModalAdd) => {
     const { open, toggle } = props
     const addUserForm = useForm<UserForm>({
         defaultValues: {
-            user_type_id: null,
-            code: '',
-            description: '',
-            name: '',
+            email: '',
+            phone: '',
+            fullname: '',
+            status: null
         },
         resolver: zodResolver(userSchema),
     })

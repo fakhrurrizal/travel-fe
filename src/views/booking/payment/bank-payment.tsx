@@ -21,8 +21,6 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 const PaymentDetailVA = () => {
-
-
     // const searchParams = useSearchParams();
     // const payment_code = searchParams.get('payment_code');
     const router = useRouter()
@@ -196,8 +194,6 @@ const PaymentDetailVA = () => {
                                     Salin
                                 </Button>
                             </Box>
-
-
                         </Paper>
 
                         {/* Payment Deadline */}
@@ -295,8 +291,6 @@ const PaymentDetailVA = () => {
                                     Rp 800.000
                                 </Typography>
                             </Box>
-
-
 
                             <Divider sx={{ my: 2 }} />
 
