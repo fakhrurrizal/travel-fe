@@ -2,7 +2,7 @@
 
 'use client'
 
-import { ServerSideAutoComplete } from '@/components'
+import { ServerSideAutoComplete, StaticAutoComplete } from '@/components'
 import { useTransportationTypeParams } from '@/utils/quries/use-transportation-type.query'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Icon } from '@iconify/react'
@@ -12,17 +12,13 @@ import {
     Chip,
     Container,
     Divider,
-    FormControl,
     Grid,
     InputAdornment,
-    InputLabel,
-    MenuItem,
     Paper,
-    Select,
     Tab,
     Tabs,
     TextField,
-    Typography,
+    Typography
 } from '@mui/material'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -30,10 +26,14 @@ import { useForm } from 'react-hook-form'
 import { HomePageForm } from './schema/form.schemas'
 import { HomeForm, homeSchema } from './schema/home.schemas'
 
+const Passenger: { value: string; label: string }[] = [
+    { value: '1 Dewasa', label: 'Dewasa (12 tahun ke atas)' },
+    { value: '1 Anak', label: 'Anak (2 - 11 tahun)' },
+]
+
 const HeroSection: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState(0)
     const [tripType, setTripType] = useState('Sekali Jalan')
-    const [passengers, setPassengers] = useState('1 Dewasa')
     const [selectedTabData, setSelectedTabData] = useState<any>(null)
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -485,14 +485,23 @@ const HeroSection: React.FC = () => {
                                     </Box>
                                 </Grid>
 
-                                {/* Passengers */}
                                 <Grid item xs={12} md={3}>
+                                    <StaticAutoComplete
+                                        control={form.control}
+                                        name='status'
+                                        label='Penumpang'
+                                        options={Passenger}
+                                        disableClearable
+                                    />
+                                </Grid>
+                                {/* <Grid item xs={12} md={3}>
                                     <FormControl fullWidth>
                                         <InputLabel sx={{ color: '#64748b' }}>Penumpang</InputLabel>
                                         <Select
                                             value={passengers}
                                             onChange={e => setPassengers(e.target.value)}
                                             label='Penumpang'
+                                            size='medium'
                                             sx={{
                                                 borderRadius: 2,
                                                 '& .MuiOutlinedInput-root': {
@@ -513,7 +522,7 @@ const HeroSection: React.FC = () => {
                                             <MenuItem value='1 Bayi'>Bayi (di bawah 2 tahun)</MenuItem>
                                         </Select>
                                     </FormControl>
-                                </Grid>
+                                </Grid> */}
 
                                 {/* Flight Class */}
                                 <Grid item xs={12} md={3}>

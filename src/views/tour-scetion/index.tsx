@@ -6,8 +6,10 @@ import React from 'react'
 import { Container, Typography, Grid, Box, Button, Paper } from '@mui/material'
 import { Icon } from '@iconify/react'
 import TourCard from './tour-card'
+import { useRouter } from 'next/router'
 
 const ToursSection: React.FC = () => {
+    const router = useRouter()
     const tours = [
         {
             id: '1',
@@ -87,6 +89,7 @@ const ToursSection: React.FC = () => {
                         </Typography>
                         <Button
                             variant='text'
+                            onClick={() => router.push('/tour-packages')}
                             endIcon={<Icon icon='mdi:arrow-right' width={20} height={20} />}
                             sx={{
                                 color: '#0ea5e9',
@@ -214,6 +217,7 @@ const ToursSection: React.FC = () => {
                         </Typography>
                         <Button
                             variant='text'
+                            onClick={() => router.push('/tour-packages')}
                             endIcon={<Icon icon='mdi:arrow-right' width={20} height={20} />}
                             sx={{
                                 color: '#0ea5e9',

@@ -61,7 +61,7 @@ const NavbarHome = ({ children }: { children: ReactNode }) => {
 
     const navItems = [
         { label: 'Home', path: '/' },
-        { label: 'Booking', path: '/booking' },
+        { label: 'Booking', path: '/booking/history' },
     ]
 
     const isHome = router.pathname === '/'
